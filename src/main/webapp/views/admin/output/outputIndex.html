@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link href="../../../layuiadmin/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../../layuiadmin/style/admin.css" media="all" rel="stylesheet">
+    <script src="../../../js/jquery-3.5.1.js"></script>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">物资名称</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" name="username" placeholder="请输入" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">物资分类</label>
+                    <div class="layui-input-inline">
+                        <select id="selectType" lay-filter="selectType" name="label">
+                            <option value="">请选择标签</option>
+                            <option value="1"></option>
+                            <option value="2"></option>-->
+<!--                            <option value="管理员">管理员</option>-->
+<!--                            <option value="采购员">采购员</option>-->
+<!--                            <option value="后勤处">后勤处</option>-->
+<!--                            <option value="财务处">财务处</option>-->
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" lay-filter="LAY-app-contlist-search" lay-submit>
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+
+            <table class="layui-hide layui-bg-green" id="test-table-page" lay-filter="test-table-page"></table>
+            <!--        <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>-->
+            <script id="buttonTpl" type="text/html">
+                {{#if(d.apply_status == 'Y'){}}
+                <button class="layui-btn layui-btn-xs" lay-event="yes">已审核</button>
+                {{# } else {}}
+                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">未审核</button>
+                {{# }}}
+            </script>
+        </div>
+    </div>
+</div>
+
+<script src="../../../layuiadmin/layui/layui.js"></script>
+
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'contlist', 'table'], function(){
+        var table = layui.table
+            ,form = layui.form;
+
+        var $ = layui.$;
+        //自动渲染表格
+        var findRender = table.render({
+            //选择元素
+            elem: '#test-table-page'
+            //请求地址
+            ,url: "/output/findAll"
+            //表格头信息
+            ,cols: [[
+                {field: 'aa',type:"numbers"}
+                ,{field:'no', title: '申领人编号', sort: true}
+                ,{field:'name', title: '申领人姓名'}
+                ,{field:'mateName', title: '物资分类'}
+                ,{field:'material',  title: '物资名称'}
+                ,{field:'quantity',  title: '申领数量',sort: true}
+                ,{field:'apply_time',  title: '申领时间',templet:"<div>{{layui.util.toDateString(d.register_time, 'yyyy-MM-dd')}}</div> }"}
+                ,{field:'apply_status',  title: '申领状态',templet: '#buttonTpl'}
+
+            ]]
+            //页数
+            ,page:true
+            //条数
+            ,limit:10
+        });
+        table.on('tool(test-table-page)',function (obj){
+            var data = obj.data;
+            if(obj.event === 'yes'){
+                layer.confirm('确定取消审核吗？', function(index){
+                    $.post("/output/updateStatus",{"status":"N","name":data.name,"material":data.material},function (data){
+                        if (data){
+                            layer.close(index);
+                            //重载表格
+                            findRender.reload();
+                            //成功提示信息！
+                            layer.msg('审核状态已修改');
+                        }else{
+                            layer.msg('审核状态修改失败！！！');
+                        }
+
+                    })
+                });
+            } else if(obj.event === 'no'){
+                layer.confirm('确定取消审核吗？', function(index){
+                    $.post("/output/updateStatus",{"status":"Y","name":data.name,"material":data.material},function (data){
+                        if (data){
+                            layer.close(index);
+                            //重载表格
+                            findRender.reload();
+                            //成功提示信息！
+                            layer.msg('审核状态已修改');
+                        }else{
+                            layer.msg('审核状态修改失败！！！');
+                        }
+                    })
+                });
+            }
+        })
+        //加载列表框
+        $.post("/matecate/findAll",function (data){
+            $.each(data.data,function (index,item){
+                $("#selectType").append(new Option(item.name,item.code))
+            })
+            layui.form.render("select");
+        });
+
+        //监听搜索
+        form.on('submit(LAY-app-contlist-search)', function(data){
+            var field = data.field;
+            //执行重载，再次执行findRende
+            findRender.reload({
+                //需要筛选的值
+                where: {
+                    "material":field.username
+                }
+                //默认显示页数
+                ,page:{
+                    curr: 1
+                }
+            });
+        });
+
+        //下拉列表
+        form.on('select(selectType)', function(data){
+            var field = data.value;
+            //执行重载，再次执行findRender
+            findRender.reload({
+                //需要筛选的值
+                where: {
+                    "category":field
+                }
+                //默认显示页数
+                ,page:{
+                    curr: 1
+                }
+            });
+        });
+
+
+        //复选框
+        var $ = layui.$, active = {
+            //添加用户
+            add: function(){
+                layer.open({
+                    type: 2
+                    ,title: '添加采购'
+                    ,content: 'addUser.html'
+                    ,maxmin: true
+                    ,area: ['550px', '550px']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        //点击确认触发 iframe 内容中的按钮提交
+                        var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
+                        submit.click();
+                    }
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-list').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>
+</body>
+</html>

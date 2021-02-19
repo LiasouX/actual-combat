@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layuiAdmin 分类管理 iframe 框</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link href="../../../layuiadmin/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="../../../layuiadmin/style/admin.css" media="all" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="layui-form" id="layuiadmin-app-form-tags" lay-filter="layuiadmin-form-tags" style="padding-top: 30px; text-align: center;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类编码</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" id="code" lay-verify="required" name="code" placeholder="请输入..." type="text">
+            <label id="errorName" style="color:red;"></label>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名称</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="name" placeholder="请输入..." type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="description" placeholder="请输入..." type="text">
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit-matecate" lay-submit type="button" value="确认添加">
+        <input id="layuiadmin-app-form-edit" lay-filter="layuiadmin-app-form-edit" lay-submit type="button" value="确认编辑">
+    </div>
+</div>
+
+<script src="../../../layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function(){
+        var $ = layui.$
+            ,form = layui.form ;
+        form.on('submit(layuiadmin-app-form-submit-matecate)', function(data){
+            var field = data.field; //获取提交的字段
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            //post提交，判断是否添加出错！
+            $.post("/matecate/addMateCate",field,function (data){
+                if (data){
+                    //添加成功
+                    parent.layui.table.reload('LAY-app-content-tags',{}); //重载表格
+                    parent.layer.close(index);
+                    parent.layer.msg("添加成功!");
+                }else{
+                    //添加错误
+                    $("#errorName").html("添加失败！");
+                }
+            })
+        });
+        $("#code").blur(function (){
+            //当失去焦点时发送请求，判断数据库是否存在输入框中的值
+            $.post("/matecate/findByCodeBoolean",{"code":$(this).val()},function (data){
+                //判断
+                console.log(data)
+                if (!data){
+                    //不存在提示错误信息
+                    $("#errorName").html("");
+                }else{
+                    //存在提示信息为空
+                    $("#errorName").html("该分类编号已存在");
+                }
+            })
+        })
+    })
+
+</script>
+</body>
+</html>

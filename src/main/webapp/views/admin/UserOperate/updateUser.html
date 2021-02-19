@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link href="../../../layuiadmin/layui/css/layui.css" media="all" rel="stylesheet">
+    <style>
+        #error,#errorName{
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="layui-form" id="layuiadmin-app-form-list" lay-filter="layuiadmin-app-form-list" style="padding: 20px 30px 0 0;">
+    <label id="error"></label>
+    <div class="layui-form-item">
+        <label class="layui-form-label">人员类型</label>
+        <div class="layui-input-inline">
+            <select id="type" lay-verify="required" name="type">
+                <option value="">--请选择人员类型--</option>
+                <option value="管理员">管理员</option>
+                <option value="采购员">采购员</option>
+                <option value="后勤处">后勤处</option>
+                <option value="财务处">财务处</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" id="username" lay-verify="required" name="username" placeholder="请输入用户名" type="text">
+            <input autocomplete="off" class="layui-input" id="name" lay-verify="required" name="name" placeholder="请输入用户名" type="hidden">
+            <label id="errorName"></label>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input"  id="password" lay-verify="required" name="password" placeholder="请输入密码" type="text">
+        </div>
+    </div>
+
+    <div class="layui-form-item" lay-filter="component-form-element">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-col-md12">
+            <input name="sex" title="男" type="radio" value="男">
+            <input checked name="sex" title="女" type="radio" value="女">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" id="phone" lay-verify="phone" name="phone" placeholder="请输入手机号" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit" lay-submit type="button" value="确认添加">
+        <input id="layuiadmin-app-form-edit" lay-filter="layuiadmin-app-form-edit" lay-submit type="button" value="确认编辑">
+    </div>
+</div>
+
+<script src="../../../layuiadmin/layui/layui.js"></script>
+<script src="../../../js/jquery-3.5.1.js"></script>
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function(){
+        var $ = layui.$
+            ,form = layui.form;
+        //监听提交
+        form.on('submit(layuiadmin-app-form-submit)', function(data){
+            var field = data.field; //获取提交的字段
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            //post提交，判断是否添加出错！
+            $.post("/user/updataUser",field,function (data){
+                //controller返回boolean类型，用来判断是否添加错误！
+                if (data){
+                    //添加成功
+                    parent.layui.table.reload('test-table-page',{}); //重载表格
+                    parent.layer.close(index); //再执行关闭
+                    parent.layer.msg("更新成功！")
+                }else{
+                    //添加错误
+                    $("#error").html("更新用户失败！")
+                }
+
+            });
+        });
+        //判断是否存在用户
+        $("#username").change(function (){
+            //输入框发送改变时发送请求
+            let val = $(this).val();
+            $.post("/user/findByNameBoolean",{"username":val},function (data){
+                //判断返回是否有值
+                if (data){
+                    //不存在提示信息为空
+                    $("#errorName").html("");
+                }else{
+                    $("#errorName").html("该用户名已存在")
+                }
+            })
+        })
+        let queryString = getQueryString();//截取url的请求参数
+        $.get("/user/findByName",{"username":queryString},function (data){
+            //表单赋值
+            form.val("layuiadmin-app-form-list",{
+                "name":data.username,
+                "username":data.username,
+                "password":data.password,
+                "phone":data.phone,
+                "type":data.type,
+                "sex":data.sex
+            })
+        })
+
+
+
+    });
+    //网上截取
+    function getQueryString() {
+        var v = "";
+        var qs = location.search.substr(1), // 获取url中"?"符后的字串
+            args = {}, // 保存参数数据的对象
+            items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
+            item = null,
+            len = items.length;
+
+        for(var i = 0; i < len; i++) {
+            item = items[i].split("=");
+            var name = decodeURIComponent(item[0]),
+                value = decodeURIComponent(item[1]);
+            if(name) {
+                args[name] = value;
+                v = value
+            }
+        }
+        return v;
+    }
+</script>
+</body>
+</html>
