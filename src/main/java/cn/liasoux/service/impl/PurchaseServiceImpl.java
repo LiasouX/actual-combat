@@ -60,8 +60,8 @@ public class PurchaseServiceImpl implements PurchaseService {
      * @throws Exception
      */
     @Override
-    public Purchase findByMaterial(String material) throws Exception {
-        return mapper.findByMaterial(material);
+    public Purchase findByMaterial(String material,String name,int quantity) throws Exception {
+        return mapper.findByMaterial(material,name,quantity);
     }
 
     /**

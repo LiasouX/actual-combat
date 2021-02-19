@@ -35,7 +35,7 @@ public interface PurchaseService {
      * @return
      * @throws Exception
      */
-    Purchase findByMaterial(String material)throws Exception;
+    Purchase findByMaterial(String material,String name,int quantity)throws Exception;
 
     /**
      * 删除采购信息！

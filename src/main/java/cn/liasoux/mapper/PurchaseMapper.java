@@ -66,8 +66,8 @@ public interface PurchaseMapper {
      * @return
      * @throws Exception
      */
-    @Select("select * from purchase where material = #{material}")
-    Purchase findByMaterial(String material)throws Exception;
+    @Select("select * from purchase where material = #{material} and name = #{name} and quantity = #{quantity} ")
+    Purchase findByMaterial(@Param("material") String material,@Param("name") String name,@Param("quantity") int quantity)throws Exception;
 
     /**
      * 删除采购信息！
@@ -77,8 +77,8 @@ public interface PurchaseMapper {
      * @return
      * @throws Exception
      */
-    @Delete("delete form purchase where material = #{material} and name = #{name} and quantity = #{quantity}")
-    boolean delPurchase(String material,String name,int quantity)throws Exception;
+    @Delete("delete from purchase where material = #{material} and name = #{name} and quantity = #{quantity}")
+    boolean delPurchase(@Param("material") String material,@Param("name") String name,@Param("quantity") int quantity)throws Exception;
 
 
 }

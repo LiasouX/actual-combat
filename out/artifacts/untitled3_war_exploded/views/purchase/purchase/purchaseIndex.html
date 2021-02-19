@@ -111,7 +111,11 @@
                 //弹出层信息
                 layer.confirm('真的删除行么', function(index){
                     //ajax的post请求
-                    $.post("/purchase/delPurchase",data,function (data){
+                    let material = data.material;
+                    let name = data.name;
+                    let quantity = data.quantity;
+
+                    $.post("/purchase/delPurchase",{"material":material,"name":name,"quantity":quantity},function (data){
                         //关闭弹出层
                         layer.close(index);
                         //重载表格
@@ -129,7 +133,8 @@
                     //标题
                     ,title: '修改采购信息'
                     //页面的内容
-                    ,content: 'updatePur.html'
+                    // ,content: 'toUpdatePur?material='+data.material+'&name='+data.name+'&quantity='+data.quantity
+                    ,content: 'toUpdatePur'
                     ,maxmin: true
                     //大小
                     ,area: ['550px', '550px']

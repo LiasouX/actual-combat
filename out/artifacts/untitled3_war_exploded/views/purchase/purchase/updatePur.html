@@ -58,7 +58,7 @@
     <div class="layui-inline">
         <label class="layui-form-label">时间</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" name="time" id="test-laydate-normal-cn" placeholder="yyyy-MM-dd">
+            <input class="layui-input" id="test-laydate-normal-cn" name="time" placeholder="yyyy-MM-dd" type="text">
         </div>
     </div>
     <div class="layui-form-item layui-hide">
@@ -119,6 +119,27 @@
         });
 
     });
+
+    //网上截取
+    function getQueryString() {
+        var v = "";
+        var qs = location.search.substr(1), // 获取url中"?"符后的字串
+            args = {}, // 保存参数数据的对象
+            items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
+            item = null,
+            len = items.length;
+
+        for(var i = 0; i < len; i++) {
+            item = items[i].split("=");
+            var name = decodeURIComponent(item[0]),
+                value = decodeURIComponent(item[1]);
+            if(name) {
+                args[name] = value;
+                v = value
+            }
+        }
+        return v;
+    }
 </script>
 </body>
 </html>

@@ -73,6 +73,7 @@ public class PurchaseController {
     @RequestMapping("/purchase/delPurchase")
     @ResponseBody
     public boolean delPurchase(String material,String name,int quantity){
+
         boolean flag = false;
         try {
             flag = service.delPurchase(material,name,quantity);
@@ -85,13 +86,18 @@ public class PurchaseController {
 
     @RequestMapping(value = "/purchase/findByMaterial",produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String findByMaterial(String material){
+    public String findByMaterial(String material,String name,int quantity){
         Purchase purchase = null;
         try {
-            purchase = service.findByMaterial(material);
+            purchase = service.findByMaterial(material,name,quantity);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return JSON.toJSONString(purchase);
+    }
+//    String material,String name,int quantity
+    @RequestMapping("/toUpdatePur")
+    public String toUpdatePur(){
+        return "purchase/updatePur.html";
     }
 }
