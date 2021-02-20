@@ -57,7 +57,7 @@ public interface IntputMapper {
      */
     @Update("update intput set category = #{int.category},material = #{int.material},quantity = #{int.quantity}," +
             "money = #{int.money},purse_time = #{int.purse_time},purse_name = #{int.purse_name},register_time = #{int.register_time},register_name = #{int.register_name} " +
-            "where material = #{mate},quantity = #{quan},purse_name = #{name}")
+            "where material = #{mate} and quantity = #{quan} and purse_name = #{name}")
     boolean updateIntput(@Param("int") Intput intput,@Param("mate") String mate,@Param("quan") String quan,@Param("name") String name)throws Exception;
 
 
@@ -69,7 +69,7 @@ public interface IntputMapper {
      * @return
      * @throws Exception
      */
-    @Delete("delete from intput where material = #{mate},quantity = #{quan},purse_name = #{name}")
+    @Delete("delete from intput where material = #{mate} and quantity = #{quan} and purse_name = #{name}")
     boolean delInput(@Param("mate") String mate,@Param("quan") String quan,@Param("name") String name)throws Exception;
 
     /**
@@ -80,6 +80,6 @@ public interface IntputMapper {
      * @return
      * @throws Exception
      */
-    @Select("select * from intput where material = #{mate},quantity = #{quan},purse_name = #{name}")
+    @Select("select * from intput where material = #{mate} and quantity = #{quan} and purse_name = #{name}")
     Intput findByIntput(@Param("mate") String mate,@Param("quan") String quan,@Param("name") String name)throws Exception;
 }

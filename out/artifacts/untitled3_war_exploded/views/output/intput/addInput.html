@@ -35,8 +35,6 @@
     </div>
 
 
-    <input autocomplete="off" class="layui-input" id="purse_name" lay-verify="required" name="purse_name" placeholder="请输入" type="hidden">
-
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
         <div class="layui-input-inline">
@@ -44,17 +42,26 @@
         </div>
     </div>
 
+    <input autocomplete="off" class="layui-input" lay-verify="required" name="register_name" placeholder="请输入" type="hidden">
+
     <div class="layui-form-item">
         <label class="layui-form-label">单价</label>
         <div class="layui-input-inline">
             <input autocomplete="off" class="layui-input" lay-verify="required" name="money" placeholder="请输入" type="text">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="register_time_str" placeholder="请输入" type="hidden">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">采购时间</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" id="test-laydate-normal-cn" name="purse_time_str" placeholder="yyyy-MM-dd" type="text">
         </div>
     </div>
     <div class="layui-form-item" >
-        <label class="layui-form-label">登记人员</label>
+        <label class="layui-form-label">采购人员</label>
         <div class="layui-input-inline">
-            <select id="selectOut" lay-filter="output" lay-verify="required" name="apply_name" >
-                <option value="">--请选择登记人员--</option>
+            <select id="selectOut" lay-filter="output" lay-verify="required" name="purse_name" >
+                <option value="">--请选择采购人员--</option>
             </select>
         </div>
     </div>
@@ -78,7 +85,6 @@
             ,form = layui.form;
         var $ = layui.$;
         var laydate = layui.laydate;
-
         laydate.render({
             elem: '#test-laydate-normal-cn'
         });
@@ -89,7 +95,8 @@
             var field = data.field; //获取提交的字段
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             //post提交，判断是否添加出错！
-            $.post("/account/addAccount",field,function (data){
+            console.log(field);
+            $.post("/intput/addIntput",field,function (data){
                 //controller返回boolean类型，用来判断是否添加错误！
                 if (data){
                     //添加成功
@@ -98,19 +105,22 @@
                     parent.layer.msg("添加成功！")
                 }else{
                     //添加错误
-                    $("#error").html("采购计划创建失败！")
+                    $("#error").html("添加失败！")
                 }
 
             });
         });
+        form.val("layuiadmin-app-form-list",{
 
+        })
         //加载列表框
         $.post("/user/loginName",function (data){
             form.val("layuiadmin-app-form-list",{
-                "purse_name":data.username
+                "register_name":data.username,
+                "register_time_str":new Date().getFullYear()+"-"+new Date().getUTCMonth()+"-"+new Date().getUTCDate()
             })
         });
-        $.post("/user/findByUsername",{"type":"后勤处"},function (data){
+        $.post("/user/findByUsername",{"type":"采购员"},function (data){
             $.each(data,function (index,item){
                 $("#selectOut").append(new Option(item,item));
 

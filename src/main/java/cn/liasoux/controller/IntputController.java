@@ -75,7 +75,6 @@ public class IntputController {
         return flag;
     }
 
-
     /**
      * 删除库存
      * @param mate
@@ -96,10 +95,19 @@ public class IntputController {
          return flag;
     }
 
+    /**
+     * 查询指定intput信息
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/intput/findByIntput",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String findByIntput(String mate, String quan, String name) throws Exception {
         Intput byIntput = service.findByIntput(mate, quan, name);
+        System.out.println(mate+"="+quan+"="+name);
         return JSON.toJSONString(byIntput);
     }
 
@@ -108,6 +116,5 @@ public class IntputController {
     public String tpUpdateHtml(String mate, String quan, String name){
         return "forward:/views/output/intput/updateIntput.html";
     }
-
 
 }

@@ -44,7 +44,6 @@ public class IntputServiceImpl implements IntputService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String register_time_str = intput.getRegister_time_str();
         String purse_time_str = intput.getPurse_time_str();
-
         Date parse = sdf.parse(register_time_str);
         Date parse1 = sdf.parse(purse_time_str);
         intput.setPurse_time(parse1);
@@ -63,6 +62,13 @@ public class IntputServiceImpl implements IntputService {
      */
     @Override
     public boolean updateIntput(Intput intput, String mate, String quan, String name)throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String register_time_str = intput.getRegister_time_str();
+        String purse_time_str = intput.getPurse_time_str();
+        Date parse = sdf.parse(register_time_str);
+        Date parse1 = sdf.parse(purse_time_str);
+        intput.setPurse_time(parse1);
+        intput.setRegister_time(parse);
         return mapper.updateIntput(intput,mate,quan,name);
     }
 
