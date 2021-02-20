@@ -90,14 +90,17 @@ public class PurchaseController {
         Purchase purchase = null;
         try {
             purchase = service.findByMaterial(material,name,quantity);
+            System.out.println(purchase);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return JSON.toJSONString(purchase);
     }
-//    String material,String name,int quantity
-    @RequestMapping("/toUpdatePur")
-    public String toUpdatePur(){
-        return "purchase/updatePur.html";
+//
+    @RequestMapping("/purchase/toUpdatePur")
+    public String toUpdatePur(String material,String name,int quantity){
+        return "forward:/views/purchase/purchase/updatePur.html";
     }
+
+
 }

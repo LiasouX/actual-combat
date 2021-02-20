@@ -96,19 +96,8 @@
 
             });
         });
-        let queryString = getQueryString();//截取url的请求参数
-        $.get("/purchase/findByMaterial",{"username":queryString},function (data){
-            //表单赋值
-            form.val("layuiadmin-app-form-list",{
-                "category":data.category,
-                "material":data.material,
-                "quantity":data.quantity,
-                "price":data.price,
-                "time":data.time,
-                "name":data.name,
+        let qs = getQueryString();//截取url的请求参数
 
-            })
-        })
 
         //加载下拉列表框
         $.post("/matecate/findAll",{"limit":"100000"},function (data){
@@ -117,7 +106,17 @@
             })
             layui.form.render("select");
         });
-
+        $.get("/purchase/findByMaterial",{"material":qs.material,"name":qs.name,"quantity":qs.quantity},function (data){
+            //表单赋值
+            form.val("layuiadmin-app-form-list",{
+                "category":data.category,
+                "material":data.material,
+                "quantity":data.quantity,
+                "price":data.price,
+                "time":data.timeStr,
+                "name":data.name,
+            })
+        })
     });
 
     //网上截取
@@ -135,10 +134,9 @@
                 value = decodeURIComponent(item[1]);
             if(name) {
                 args[name] = value;
-                v = value
             }
         }
-        return v;
+        return args;
     }
 </script>
 </body>

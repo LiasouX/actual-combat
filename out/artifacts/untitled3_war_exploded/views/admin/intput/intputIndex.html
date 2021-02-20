@@ -89,7 +89,7 @@
         });
 
         //加载列表框
-        $.post("/matecate/findAll",function (data){
+        $.post("/matecate/findAll",{"limit":"100000"},function (data){
             $.each(data.data,function (index,item){
                 $("#selectType").append(new Option(item.name,item.code))
             })

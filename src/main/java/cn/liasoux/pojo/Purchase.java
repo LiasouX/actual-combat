@@ -1,5 +1,6 @@
 package cn.liasoux.pojo;
 
+import cn.liasoux.Untils.DateUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -11,20 +12,33 @@ public class Purchase {
     private double price;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date time;
+    private String timeStr;
     private String name;
     private String mateName;
 
     @Override
     public String toString() {
         return "Purchase{" +
-                "category=" + category +
+                "category='" + category + '\'' +
                 ", material='" + material + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", time=" + time +
+                ", timeStr='" + timeStr + '\'' +
                 ", name='" + name + '\'' +
                 ", mateName='" + mateName + '\'' +
                 '}';
+    }
+
+    public String getTimeStr() {
+        if (time!=null){
+            timeStr = DateUtil.stringToDate(time);
+        }
+        return timeStr;
+    }
+
+    public void setTimeStr(String timeStr) {
+        this.timeStr = timeStr;
     }
 
     public String getCategory() {

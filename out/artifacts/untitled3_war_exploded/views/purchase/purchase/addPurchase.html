@@ -87,7 +87,6 @@
             var field = data.field; //获取提交的字段
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             //post提交，判断是否添加出错！
-            console.log(data)
             $.post("/purchase/addPurchase",field,function (data){
                 //controller返回boolean类型，用来判断是否添加错误！
                 if (data){
@@ -111,7 +110,6 @@
         });
 
         $.post("/matecate/findAll",{"limit":"100000"},function (data){
-            console.log(data)
             $.each(data.data,function (index,item){
                 $("#selectType").append(new Option(item.name,item.code))
             })
