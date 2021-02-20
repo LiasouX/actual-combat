@@ -19,4 +19,12 @@ public interface AccountService {
      * @return
      */
     boolean updateStatus(String status, String name,String material) throws Exception;
+
+    /**
+     * 添加报销信息
+     * @param account
+     * @return
+     * @throws Exception
+     */
+    boolean addAccount(account account)throws Exception;
 }

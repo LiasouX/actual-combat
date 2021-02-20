@@ -50,9 +50,9 @@
             <!--        <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>-->
             <script id="buttonTpl" type="text/html">
                 {{#if(d.status == 'Y'){}}
-                <button class="layui-btn layui-btn-xs" lay-event="yes">报销中</button>
+                <button class="layui-btn layui-btn-xs" lay-event="yes">已报销</button>
                 {{# } else {}}
-                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">已报销</button>
+                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">报销中</button>
                 {{# }}}
             </script>
         </div>
@@ -97,7 +97,7 @@
         table.on('tool(test-table-page)',function (obj){
             var data = obj.data;
             if(obj.event === 'yes'){
-                layer.confirm('确定取消审核吗？', function(index){
+                layer.confirm('确定修改审核状态吗？', function(index){
                     $.post("/account/updateStatus",{"status":"N","name":data.purse_name,"material":data.material},function (data){
                         if (data){
                             layer.close(index);
@@ -111,7 +111,7 @@
                     })
                 });
             } else if(obj.event === 'no'){
-                layer.confirm('确定取消审核吗？', function(index){
+                layer.confirm('确定修改审核状态吗？', function(index){
                     $.post("/account/updateStatus",{"status":"Y","name":data.purse_name,"material":data.material},function (data){
                         if (data){
                             layer.close(index);

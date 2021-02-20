@@ -144,4 +144,13 @@ public class UserController {
     public String updateUser(String username){
         return "forward:views/admin/UserOperate/updateUser.html";
     }
+
+
+    @RequestMapping(value = "/user/findByUsername",produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String findByUsername(){
+        List<String> usernames = service.findByUsername("后勤处");
+        System.out.println(usernames);
+        return JSON.toJSONString(usernames);
+    }
 }

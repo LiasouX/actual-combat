@@ -45,14 +45,16 @@
         </div>
 
         <div class="layui-card-body">
-
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-list" data-type="add">提交报销信息</button>
+            </div>
             <table class="layui-hide layui-bg-green" id="test-table-page" lay-filter="test-table-page"></table>
             <!--        <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>-->
             <script id="buttonTpl" type="text/html">
                 {{#if(d.status == 'Y'){}}
-                <button class="layui-btn layui-btn-xs" lay-event="yes">报销中</button>
+                <button class="layui-btn layui-btn-xs" lay-event="yes">已报销</button>
                 {{# } else {}}
-                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">已报销</button>
+                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">报销中</button>
                 {{# }}}
             </script>
         </div>
@@ -97,7 +99,7 @@
         table.on('tool(test-table-page)',function (obj){
             var data = obj.data;
             if(obj.event === 'yes'){
-                layer.confirm('确定取消审核吗？', function(index){
+                layer.confirm('确定修改审核状态吗？', function(index){
                     $.post("/account/updateStatus",{"status":"N","name":data.purse_name,"material":data.material},function (data){
                         if (data){
                             layer.close(index);
@@ -111,7 +113,7 @@
                     })
                 });
             } else if(obj.event === 'no'){
-                layer.confirm('确定取消审核吗？', function(index){
+                layer.confirm('确定修改审核状态吗？', function(index){
                     $.post("/account/updateStatus",{"status":"Y","name":data.purse_name,"material":data.material},function (data){
                         if (data){
                             layer.close(index);
@@ -174,9 +176,9 @@
                 layer.open({
                     type: 2
                     ,title: '添加采购'
-                    ,content: 'addUser.html'
+                    ,content: 'addAccount.html'
                     ,maxmin: true
-                    ,area: ['550px', '550px']
+                    ,area: ['550px', '750px']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
                         //点击确认触发 iframe 内容中的按钮提交

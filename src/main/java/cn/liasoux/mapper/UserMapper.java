@@ -66,4 +66,12 @@ public interface UserMapper {
      */
     @Update("update user set username=#{user.username},password = #{user.password},type = #{user.type},sex = #{user.sex},phone = #{user.phone} where username = #{name}")
     boolean updataUser(@Param("name") String name,@Param("user") User user);
+
+    /**
+     * 查询后勤处的用户
+     * @param type
+     * @return
+     */
+    @Select("select username from user where type=#{type}")
+    List<String> findByUsername(String type);
 }

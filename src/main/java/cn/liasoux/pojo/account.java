@@ -1,6 +1,7 @@
 package cn.liasoux.pojo;
 
 public class account {
+    private String category;
     private String material;
     private String quantity;
     private String money;
@@ -8,6 +9,14 @@ public class account {
     private String apply_name;
     private String status;
     private String mateName;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     @Override
     public String toString() {

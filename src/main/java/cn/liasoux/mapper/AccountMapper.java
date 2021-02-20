@@ -41,4 +41,15 @@ public interface AccountMapper {
      */
     @Update("update account set status = #{stat} where purse_name = #{name} and material = #{mate}")
     boolean updateStatus(@Param("stat") String status,@Param("mate") String material,@Param("name") String name)throws Exception;
+
+
+    /**
+     * 添加报销信息
+     * @param account
+     * @return
+     * @throws Exception
+     */
+    @Insert("INSERT INTO account (category, material, quantity, money, purse_name, apply_name, status)" +
+            "                     VALUES (#{category}, #{material}, #{quantity}, #{money}, #{purse_name}, #{apply_name}, #{status})")
+    boolean addAccount(account account)throws Exception;
 }

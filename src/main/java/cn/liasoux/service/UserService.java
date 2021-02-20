@@ -15,6 +15,8 @@ public interface UserService {
     void delUser(String username);
     //更新用户
     boolean updataUser(String name,User user);
-    //
+    //username查询数据
     User findByName(String username);
+    //查询后勤处的用户
+    List<String> findByUsername(String type);
 }

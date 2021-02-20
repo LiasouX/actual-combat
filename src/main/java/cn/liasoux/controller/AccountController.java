@@ -40,12 +40,35 @@ public class AccountController {
         return layui;
     }
 
+    /**
+     * 修改审核状态
+     * @return
+     */
     @RequestMapping("/account/updateStatus")
     @ResponseBody
     public boolean updateStatus(String status,String name,String material){
         boolean flag = false;
         try {
             flag = service.updateStatus(status,material,name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+
+    /**
+     * 添加报销信息
+     * @param account
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/account/addAccount")
+    @ResponseBody
+    public boolean addAccount(account account){
+        boolean flag = false;
+        try {
+            flag = service.addAccount(account);
         } catch (Exception e) {
             e.printStackTrace();
         }
