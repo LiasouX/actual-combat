@@ -9,8 +9,17 @@ public class Output {
     private String material;
     private int quantity;
     private Date  apply_time;
+    private String apply_time_str;
     private String apply_status;
     private String mateName;
+
+    public String getApply_time_str() {
+        return apply_time_str;
+    }
+
+    public void setApply_time_str(String apply_time_str) {
+        this.apply_time_str = apply_time_str;
+    }
 
     @Override
     public String toString() {

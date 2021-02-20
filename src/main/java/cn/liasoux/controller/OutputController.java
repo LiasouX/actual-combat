@@ -37,6 +37,13 @@ public class OutputController {
         return layui;
     }
 
+    /**
+     * 提交申领
+     * @param status
+     * @param name
+     * @param material
+     * @return
+     */
     @RequestMapping("/output/updateStatus")
     @ResponseBody
     public boolean updateStatus(String status,String name,String material){
@@ -47,6 +54,86 @@ public class OutputController {
             e.printStackTrace();
         }
         return flag;
+    }
+
+    /**
+     * 更新
+     * @param output
+     * @param name
+     * @param material
+     * @return
+     */
+    @RequestMapping("/output/updateOutput")
+    @ResponseBody
+    public boolean updateOutput(Output output,String name,String material){
+        boolean flag = false;
+        try {
+            flag = service.updateOutput(output,material ,name );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    /**
+     * 删除
+     * @param name
+     * @param material
+     * @return
+     */
+    @RequestMapping("/output/delOutput")
+    @ResponseBody
+    public boolean delOutput(String name,String material){
+        boolean flag = false;
+        try {
+            flag = service.delOutput(material,name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+
+    /**
+     * 添加
+     * @param output
+     * @return
+     */
+    @RequestMapping("/output/addOutput")
+    @ResponseBody
+    public boolean addOutput(Output output){
+        boolean flag = false;
+        try {
+            flag = service.addOutput(output);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+
+    /**
+     * 查找指定
+     * @param name
+     * @param material
+     * @return
+     */
+    @RequestMapping(value = "/output/findByOutput",produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public Output findByOutput(String name,String material){
+        Output output = null;
+        try {
+            output = service.findByOutput(material, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
+
+    @RequestMapping("output/toUpdateHtml")
+    public String toUpdateHtml(String name,String material){
+        return "forward:/views/output/output/updateIntput.html";
     }
 
 }

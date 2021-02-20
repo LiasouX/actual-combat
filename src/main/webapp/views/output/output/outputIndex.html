@@ -45,15 +45,21 @@
         </div>
 
         <div class="layui-card-body">
-
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-list" data-type="add">登记申领</button>
+            </div>
             <table class="layui-hide layui-bg-green" id="test-table-page" lay-filter="test-table-page"></table>
             <!--        <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>-->
             <script id="buttonTpl" type="text/html">
                 {{#if(d.apply_status == 'Y'){}}
-                <button class="layui-btn layui-btn-xs" lay-event="yes">已审核</button>
+                <button class="layui-btn layui-btn-xs" lay-event="yes">已申领</button>
                 {{# } else {}}
-                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">未审核</button>
+                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">申领中</button>
                 {{# }}}
+            </script>
+            <script id="table-content-list" type="text/html">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
             </script>
         </div>
     </div>
@@ -85,15 +91,16 @@
                 ,{field:'mateName', title: '物资分类'}
                 ,{field:'material',  title: '物资名称'}
                 ,{field:'quantity',  title: '申领数量',sort: true}
-                ,{field:'apply_time',  title: '申领时间',templet:"<div>{{layui.util.toDateString(d.register_time, 'yyyy-MM-dd')}}</div> }"}
+                ,{field:'apply_time',  title: '申领时间',templet:"<div>{{layui.util.toDateString(d.apply_time, 'yyyy-MM-dd')}}</div> }"}
                 ,{field:'apply_status',  title: '申领状态',templet: '#buttonTpl'}
-
+                ,{field:"操作",width:178, align:'center', fixed: 'right', toolbar: '#table-content-list'}
             ]]
             //页数
             ,page:true
             //条数
             ,limit:10
         });
+
         table.on('tool(test-table-page)',function (obj){
             var data = obj.data;
             if(obj.event === 'yes'){
@@ -124,6 +131,44 @@
                             layer.msg('审核状态修改失败！！！');
                         }
                     })
+                });
+            }else if(obj.event === 'del'){
+                //弹出层信息
+                layer.confirm('真的删除行么', function(index){
+                    //ajax的post请求
+                    //Intput intput, String mate, String quan, String name
+                    $.post("/output/delOutput",{"material":data.material,"name":data.name},function (data){
+                        //关闭弹出层
+                        layer.close(index);
+                        //重载表格
+                        findRender.reload();
+                        //成功提示信息！
+                        layer.msg('已删除');
+                    });
+
+                    //
+                });
+            } else if(obj.event === 'edit'){
+                //打开页面
+                layer.open({
+                    //打开页面的类型
+                    type: 2
+                    //标题
+                    ,title: '修改人员'
+                    //页面的内容
+                    ,content: '/output/toUpdateHtml?mate='+data.material+"&name="+data.name
+                    ,maxmin: true
+                    //大小
+                    ,area: ['550px', '750px']
+                    //显示的按钮
+                    ,btn: ['确定', '取消']
+                    //成功的回调函数
+                    ,yes: function(index, layero){
+                        //点击确认触发 iframe 内容中的按钮提交
+                        //获取打开页面的提交按钮
+                        var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
+                        submit.click();
+                    }
                 });
             }
         })
@@ -174,10 +219,10 @@
             add: function(){
                 layer.open({
                     type: 2
-                    ,title: '添加采购'
-                    ,content: 'addUser.html'
+                    ,title: '添加申领'
+                    ,content: 'addOutput.html'
                     ,maxmin: true
-                    ,area: ['550px', '550px']
+                    ,area: ['550px', '750px']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
                         //点击确认触发 iframe 内容中的按钮提交

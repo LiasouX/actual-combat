@@ -1,5 +1,6 @@
 package cn.liasoux.mapper;
 
+
 import cn.liasoux.pojo.Output;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -41,4 +42,52 @@ public interface OutputMapper {
      */
     @Update("update output set apply_status = #{stat} where name = #{name} and material = #{mate}")
     boolean updateStatus(@Param("stat") String status,@Param("name") String name,@Param("mate") String material)throws Exception;
+
+
+
+
+
+
+    /**
+     * 入库添加
+     * @return
+     * @throws Exception
+     */
+    @Insert("insert into output (no,name,category,material,quantity,apply_time,apply_status) " +
+            "values(#{no},#{name},#{category},#{material},#{quantity},#{apply_time},#{apply_status})")
+    boolean addOutput(Output intput)throws Exception;
+
+
+    /**
+     * 更新入库信息
+     * @param output
+     * @param mate
+     * @param name
+     * @return
+     */
+    @Update("update Output set no = #{int.no},name = #{int.name},category = #{int.category}," +
+            "material = #{int.material},quantity = #{int.quantity},apply_time = #{int.apply_time} " +
+            "where material = #{mate} and name = #{name}")
+    boolean updateOutput(@Param("int") Output output, @Param("mate") String mate, @Param("name") String name)throws Exception;
+
+
+    /**
+     * 删除库存
+     * @param mate
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @Delete("delete from Output where material = #{mate} and name = #{name}")
+    boolean delOutput(@Param("mate") String mate,@Param("name") String name)throws Exception;
+
+    /**
+     * 查询指定intput信息
+     * @param mate
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @Select("select * from Output where material = #{mate} and name = #{name}")
+    Output findByOutput(@Param("mate") String mate,@Param("name") String name)throws Exception;
 }

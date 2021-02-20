@@ -29,10 +29,6 @@
                             <option value="">请选择标签</option>
                             <option value="1"></option>
                             <option value="2"></option>-->
-<!--                            <option value="管理员">管理员</option>-->
-<!--                            <option value="采购员">采购员</option>-->
-<!--                            <option value="后勤处">后勤处</option>-->
-<!--                            <option value="财务处">财务处</option>-->
                         </select>
                     </div>
                 </div>
@@ -46,20 +42,16 @@
 
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-list" data-type="add">登记申领</button>
+
             </div>
             <table class="layui-hide layui-bg-green" id="test-table-page" lay-filter="test-table-page"></table>
             <!--        <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>-->
             <script id="buttonTpl" type="text/html">
-                {{#if(d.apply_status == 'Y'){}}
-                <button class="layui-btn layui-btn-xs" lay-event="yes">已申领</button>
+                {{#if(d.status == 'Y'){}}
+                <button class="layui-btn layui-btn-xs" lay-event="yes">已报销</button>
                 {{# } else {}}
-                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">申领中</button>
+                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">报销中</button>
                 {{# }}}
-            </script>
-            <script id="table-content-list" type="text/html">
-                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
             </script>
         </div>
     </div>
@@ -82,30 +74,29 @@
             //选择元素
             elem: '#test-table-page'
             //请求地址
-            ,url: "/output/findAll"
+            ,url: "/account/findAll"
             //表格头信息
             ,cols: [[
                 {field: 'aa',type:"numbers"}
-                ,{field:'no', title: '申领人编号', sort: true}
-                ,{field:'name', title: '申领人姓名'}
                 ,{field:'mateName', title: '物资分类'}
                 ,{field:'material',  title: '物资名称'}
-                ,{field:'quantity',  title: '申领数量',sort: true}
-                ,{field:'apply_time',  title: '申领时间',templet:"<div>{{layui.util.toDateString(d.apply_time, 'yyyy-MM-dd')}}</div> }"}
-                ,{field:'apply_status',  title: '申领状态',templet: '#buttonTpl'}
-                ,{field:"操作",width:178, align:'center', fixed: 'right', toolbar: '#table-content-list'}
+                ,{field:'quantity',  title: '采购数量',sort: true}
+                ,{field:'money',  title: '采购单价',sort: true}
+                ,{field:'purse_name',  title: '采购人员',sort: true}
+                ,{field:'apply_name',  title: '审核人员',sort: true}
+                ,{field:'status',  title: '报销状态',templet: '#buttonTpl'}
+
             ]]
             //页数
             ,page:true
             //条数
             ,limit:10
         });
-
         table.on('tool(test-table-page)',function (obj){
             var data = obj.data;
             if(obj.event === 'yes'){
-                layer.confirm('确定取消审核吗？', function(index){
-                    $.post("/output/updateStatus",{"status":"N","name":data.name,"material":data.material},function (data){
+                layer.confirm('确定修改审核状态吗？', function(index){
+                    $.post("/account/updateStatus",{"status":"N","name":data.purse_name,"material":data.material},function (data){
                         if (data){
                             layer.close(index);
                             //重载表格
@@ -115,12 +106,11 @@
                         }else{
                             layer.msg('审核状态修改失败！！！');
                         }
-
                     })
                 });
             } else if(obj.event === 'no'){
-                layer.confirm('确定取消审核吗？', function(index){
-                    $.post("/output/updateStatus",{"status":"Y","name":data.name,"material":data.material},function (data){
+                layer.confirm('确定修改审核状态吗？', function(index){
+                    $.post("/account/updateStatus",{"status":"Y","name":data.purse_name,"material":data.material},function (data){
                         if (data){
                             layer.close(index);
                             //重载表格
@@ -131,51 +121,13 @@
                             layer.msg('审核状态修改失败！！！');
                         }
                     })
-                });
-            }else if(obj.event === 'del'){
-                //弹出层信息
-                layer.confirm('真的删除行么', function(index){
-                    //ajax的post请求
-                    //Intput intput, String mate, String quan, String name
-                    $.post("/output/delOutput",{"material":data.material,"name":data.name},function (data){
-                        //关闭弹出层
-                        layer.close(index);
-                        //重载表格
-                        findRender.reload();
-                        //成功提示信息！
-                        layer.msg('已删除');
-                    });
-
-                    //
-                });
-            } else if(obj.event === 'edit'){
-                //打开页面
-                layer.open({
-                    //打开页面的类型
-                    type: 2
-                    //标题
-                    ,title: '修改人员'
-                    //页面的内容
-                    ,content: '/output/toUpdateHtml?mate='+data.material+"&name="+data.name
-                    ,maxmin: true
-                    //大小
-                    ,area: ['550px', '750px']
-                    //显示的按钮
-                    ,btn: ['确定', '取消']
-                    //成功的回调函数
-                    ,yes: function(index, layero){
-                        //点击确认触发 iframe 内容中的按钮提交
-                        //获取打开页面的提交按钮
-                        var submit = layero.find('iframe').contents().find("#layuiadmin-app-form-submit");
-                        submit.click();
-                    }
                 });
             }
         })
         //加载列表框
-        $.post("/matecate/findAll",{"limit":"100000"},function (data){
+        $.post("/matecate/findAll",{"limit":10000},function (data){
             $.each(data.data,function (index,item){
-                $("#selectType").append(new Option(item.name,item.code))
+                $("#selectType").append(new Option(item.name,item.code));
             })
             layui.form.render("select");
         });
@@ -219,8 +171,8 @@
             add: function(){
                 layer.open({
                     type: 2
-                    ,title: '添加申领'
-                    ,content: 'addOutput.html'
+                    ,title: '添加采购'
+                    ,content: 'addAccount.html'
                     ,maxmin: true
                     ,area: ['550px', '750px']
                     ,btn: ['确定', '取消']

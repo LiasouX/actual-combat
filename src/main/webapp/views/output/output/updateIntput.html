@@ -19,48 +19,43 @@
 <div class="layui-form" id="layuiadmin-app-form-list" lay-filter="layuiadmin-app-form-list" style="padding: 20px 30px 0 0;">
     <label id="error"></label>
     <div class="layui-form-item">
-        <label class="layui-form-label">物资分类</label>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">编号</label>
         <div class="layui-input-inline">
-            <select id="selectType"  lay-verify="required" name="category">
-                <option value="">--请选择物资类型--</option>
+            <input autocomplete="off" class="layui-input" id="username" lay-verify="required" name="no" placeholder="请输入" type="text">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="name" placeholder="请输入" type="text">
+        </div>
+    </div>
+
+    <input autocomplete="off" class="layui-input" lay-verify="required" name="apply_time_str" placeholder="请输入" type="text">
+        <label class="layui-form-label">物资类型</label>
+        <div class="layui-input-inline">
+            <select id="selectType" lay-verify="required" name="category">
+                <option value="">--请选择采购物资类型--</option>
             </select>
         </div>
     </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">采购人</label>
+    <div class="layui-inline">
+        <label class="layui-form-label">物资名称</label>
         <div class="layui-input-inline">
-            <input autocomplete="off" class="layui-input" id="name" lay-verify="required" name="name" placeholder="请输入" type="text">
+            <input class="layui-input" id="test-laydate-normal-cn" name="material" placeholder="请输入" type="text">
         </div>
     </div>
-
     <div class="layui-form-item">
-        <label class="layui-form-label">物品名称</label>
-        <div class="layui-input-inline">
-            <input autocomplete="off" class="layui-input" id="username" lay-verify="required" name="material" placeholder="请输入" type="text">
-        </div>
-    </div>
-
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">数量</label>
+        <label class="layui-form-label">物资数量</label>
         <div class="layui-input-inline">
             <input autocomplete="off" class="layui-input" lay-verify="required" name="quantity" placeholder="请输入" type="text">
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">单价</label>
-        <div class="layui-input-inline">
-            <input autocomplete="off" class="layui-input" lay-verify="required" name="price" placeholder="请输入" type="text">
-        </div>
-    </div>
-    <div class="layui-inline">
-        <label class="layui-form-label">时间</label>
-        <div class="layui-input-inline">
-            <input class="layui-input" id="test-laydate-normal-cn" name="time" placeholder="yyyy-MM-dd" type="text">
-        </div>
-    </div>
     <div class="layui-form-item layui-hide">
         <input id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit" lay-submit type="button" value="确认添加">
         <input id="layuiadmin-app-form-edit" lay-filter="layuiadmin-app-form-edit" lay-submit type="button" value="确认编辑">
@@ -74,15 +69,27 @@
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form'], function(){
+    }).use(['index', 'form','laydate'], function(){
         var $ = layui.$
             ,form = layui.form;
         //监听提交
+//加载下拉列表框
+        $.post("/matecate/findAll",{"limit":"100000"},function (data){
+            $.each(data.data,function (index,item){
+                $("#selectType").append(new Option(item.name,item.code))
+            })
+            layui.form.render("select");
+        });
+
+            form.val("layuiadmin-app-form-list",{
+                "apply_time_str":new Date().getFullYear()+"-"+new Date().getUTCMonth()+"-"+new Date().getUTCDate()
+            })
+
         form.on('submit(layuiadmin-app-form-submit)', function(data){
             var field = data.field; //获取提交的字段
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             //post提交，判断是否添加出错！
-            $.post("/purchase/updatePurchase",field,function (data){
+            $.post("/output/updateOutput",field,function (data){
                 //controller返回boolean类型，用来判断是否添加错误！
                 if (data){
                     //添加成功
@@ -91,30 +98,25 @@
                     parent.layer.msg("更新成功！")
                 }else{
                     //添加错误
-                    parent.layer.msg("更新用户失败！")
+                    parent.layer.msg("错误！")
                 }
 
             });
         });
+
         let qs = getQueryString();//截取url的请求参数
 
 
-        //加载下拉列表框
-        $.post("/matecate/findAll",{"limit":"100000"},function (data){
-            $.each(data.data,function (index,item){
-                $("#selectType").append(new Option(item.name,item.code))
-            })
-            layui.form.render("select");
-        });
-        $.get("/purchase/findByMaterial",{"material":qs.material,"name":qs.name,"quantity":qs.quantity},function (data){
+
+
+        $.get("/output/findByOutput",{"material":qs.mate,"name":qs.name},function (data){
             //表单赋值
             form.val("layuiadmin-app-form-list",{
+                "no":data.no,
+                "name":data.name,
                 "category":data.category,
                 "material":data.material,
-                "quantity":data.quantity,
-                "price":data.price,
-                "time":data.timeStr,
-                "name":data.name,
+                "quantity":data.quantity
             })
         })
     });
