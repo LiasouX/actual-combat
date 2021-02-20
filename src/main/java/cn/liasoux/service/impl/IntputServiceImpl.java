@@ -6,6 +6,8 @@ import cn.liasoux.service.IntputService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,10 +31,67 @@ public class IntputServiceImpl implements IntputService {
         }else{
             intputs = mapper.findAllMaCa("%"+name+"%", mata);
         }
-        for (Intput intput : intputs) {
-            System.out.println("=======");
-            System.out.println(intput);
-        }
         return intputs;
     }
+
+    /**
+     * 入库添加
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public boolean addIntput(Intput intput) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String register_time_str = intput.getRegister_time_str();
+        String purse_time_str = intput.getPurse_time_str();
+
+        Date parse = sdf.parse(register_time_str);
+        Date parse1 = sdf.parse(purse_time_str);
+        intput.setPurse_time(parse1);
+        intput.setRegister_time(parse);
+        return mapper.addIntput(intput);
+    }
+
+
+    /**
+     * 更新入库信息
+     * @param intput
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     */
+    @Override
+    public boolean updateIntput(Intput intput, String mate, String quan, String name)throws Exception {
+        return mapper.updateIntput(intput,mate,quan,name);
+    }
+
+
+    /**
+     * 删除库存
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public boolean delInput(String mate, String quan, String name) throws Exception {
+        return mapper.delInput(mate,quan,name);
+    }
+
+    /**
+     * 查询指定intput信息
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Intput findByIntput(String mate, String quan, String name) throws Exception {
+        return mapper.findByIntput(mate, quan, name);
+    }
+
+
 }

@@ -104,7 +104,8 @@
                 //弹出层信息
                 layer.confirm('真的删除行么', function(index){
                     //ajax的post请求
-                    $.post("/user/delUser",{"username":data.username},function (data){
+                    //Intput intput, String mate, String quan, String name
+                    $.post("/intput/delIntput",{"mate":data.material,"quan":data.quantity,"name":data.purse_name},function (data){
                         //关闭弹出层
                         layer.close(index);
                         //重载表格
@@ -123,7 +124,7 @@
                     //标题
                     ,title: '修改人员'
                     //页面的内容
-                    ,content: '/toUpdateUser?username='+data.username
+                    ,content: '/intput/tpUpdateHtml?mate='+data.material+"&quan="+data.quantity+"&name="+data.purse_name
                     ,maxmin: true
                     //大小
                     ,area: ['550px', '550px']

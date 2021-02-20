@@ -46,7 +46,7 @@
 
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                <button class="layui-btn layuiadmin-btn-list" data-type="add">添加采购计划</button>
+                <button class="layui-btn layuiadmin-btn-list" data-type="add">登记入库</button>
             </div>
             <table class="layui-hide layui-bg-green" id="test-table-page" lay-filter="test-table-page"></table>
             <!--        <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>-->
@@ -75,16 +75,18 @@
             //选择元素
             elem: '#test-table-page'
             //请求地址
-            ,url: "/purchase/findAll"
+            ,url: "/intput/findAll"
             //表格头信息
             ,cols: [[
                 {field: 'aa',type:"numbers"}
                 ,{field:'mateName', title: '物资分类'}
                 ,{field:'material', title: '物资名称'}
                 ,{field:'quantity', title: '采购数量', sort: true}
-                ,{field:'price',  title: '采购价格',sort: true}
-                ,{field:'time',  title: '采购时间',templet:"<div>{{layui.util.toDateString(d.time, 'yyyy-MM-dd')}}</div> }",sort: true}
-                ,{field:'name',  title: '采购人员'}
+                ,{field:'money',  title: '采购价格',sort: true}
+                ,{field:'purse_time',  title: '采购时间',templet:"<div>{{layui.util.toDateString(d.purse_time, 'yyyy-MM-dd')}}</div> }",sort: true}
+                ,{field:'purse_name',  title: '采购人员'}
+                ,{field:'register_time',  title: '登记时间',templet:"<div>{{layui.util.toDateString(d.register_time, 'yyyy-MM-dd')}}</div> }"}
+                ,{field:'register_name',  title: '登记人员'}
                 ,{field:"操作",width:178, align:'center', fixed: 'right', toolbar: '#table-content-list'},
             ]]
             //页数
@@ -93,29 +95,16 @@
             ,limit:10
         });
 
-        //加载列表框
-        $.post("/matecate/findAll",{"limit":"100000"},function (data){
-            $.each(data.data,function (index,item){
-                $("#selectType").append(new Option(item.name,item.code))
-            })
-            layui.form.render("select");
-        });
-
-        //判断操作
+        //操作
         table.on('tool(test-table-page)', function(obj){
             //获取全部信息
             var data = obj.data;
             //判断点击了那个按钮
-
             if(obj.event === 'del'){
                 //弹出层信息
                 layer.confirm('真的删除行么', function(index){
                     //ajax的post请求
-                    let material = data.material;
-                    let name = data.name;
-                    let quantity = data.quantity;
-
-                    $.post("/purchase/delPurchase",{"material":material,"name":name,"quantity":quantity},function (data){
+                    $.post("/user/delUser",{"username":data.username},function (data){
                         //关闭弹出层
                         layer.close(index);
                         //重载表格
@@ -127,16 +116,17 @@
                     //
                 });
             } else if(obj.event === 'edit'){
+                //打开页面
                 layer.open({
                     //打开页面的类型
                     type: 2
                     //标题
-                    ,title: '修改采购信息'
+                    ,title: '修改人员'
                     //页面的内容
-                    ,content: '/purchase/toUpdatePur?material='+data.material+'&name='+data.name+'&quantity='+data.quantity
+                    ,content: '/toUpdateUser?username='+data.username
                     ,maxmin: true
                     //大小
-                    ,area: ['550px', '750px']
+                    ,area: ['550px', '550px']
                     //显示的按钮
                     ,btn: ['确定', '取消']
                     //成功的回调函数
@@ -150,6 +140,13 @@
             }
         });
 
+        //加载列表框
+        $.post("/matecate/findAll",{"limit":"100000"},function (data){
+            $.each(data.data,function (index,item){
+                $("#selectType").append(new Option(item.name,item.code))
+            })
+            layui.form.render("select");
+        });
 
         //监听搜索
         form.on('submit(LAY-app-contlist-search)', function(data){
@@ -183,15 +180,17 @@
             });
         });
 
+
+        //复选框
         var $ = layui.$, active = {
             //添加用户
             add: function(){
                 layer.open({
                     type: 2
-                    ,title: '添加采购计划'
-                    ,content: 'addPurchase.html'
+                    ,title: '登记入库'
+                    ,content: 'addInput.html'
                     ,maxmin: true
-                    ,area: ['550px', '850px']
+                    ,area: ['550px', '750px']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
                         //点击确认触发 iframe 内容中的按钮提交
@@ -201,7 +200,6 @@
                 });
             }
         };
-
 
         $('.layui-btn.layuiadmin-btn-list').on('click', function(){
             var type = $(this).data('type');

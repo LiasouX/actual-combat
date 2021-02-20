@@ -90,7 +90,6 @@ public class PurchaseController {
         Purchase purchase = null;
         try {
             purchase = service.findByMaterial(material,name,quantity);
-            System.out.println(purchase);
         } catch (Exception e) {
             e.printStackTrace();
         }

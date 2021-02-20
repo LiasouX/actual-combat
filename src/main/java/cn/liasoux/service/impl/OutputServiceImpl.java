@@ -25,7 +25,6 @@ public class OutputServiceImpl implements OutputService {
         List<Output> outputs = null;
         if ("".equals(mata)){
             outputs = mapper.findAll("%" + name + "%");
-            System.out.println("=================");
         }else{
             outputs = mapper.findAllMaCa("%"+name+"%", mata);
         }

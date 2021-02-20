@@ -35,4 +35,51 @@ public interface IntputMapper {
     @Select("select * from intput where category = #{cate} and material like #{name}")
     @ResultMap("reFindAll")
     List<Intput> findAllMaCa(@Param("name") String name, @Param("cate") String cate);
+
+
+    /**
+     * 入库添加
+     * @return
+     * @throws Exception
+     */
+    @Insert("insert into intput (category,material,quantity,money,purse_time,purse_name,register_time,register_name) " +
+            "values(#{category},#{material},#{quantity},#{money},#{purse_time},#{purse_name},#{register_time},#{register_name})")
+    boolean addIntput(Intput intput)throws Exception;
+
+
+    /**
+     * 更新入库信息
+     * @param intput
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     */
+    @Update("update intput set category = #{int.category},material = #{int.material},quantity = #{int.quantity}," +
+            "money = #{int.money},purse_time = #{int.purse_time},purse_name = #{int.purse_name},register_time = #{int.register_time},register_name = #{int.register_name} " +
+            "where material = #{mate},quantity = #{quan},purse_name = #{name}")
+    boolean updateIntput(@Param("int") Intput intput,@Param("mate") String mate,@Param("quan") String quan,@Param("name") String name)throws Exception;
+
+
+    /**
+     * 删除库存
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @Delete("delete from intput where material = #{mate},quantity = #{quan},purse_name = #{name}")
+    boolean delInput(@Param("mate") String mate,@Param("quan") String quan,@Param("name") String name)throws Exception;
+
+    /**
+     * 查询指定intput信息
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     * @throws Exception
+     */
+    @Select("select * from intput where material = #{mate},quantity = #{quan},purse_name = #{name}")
+    Intput findByIntput(@Param("mate") String mate,@Param("quan") String quan,@Param("name") String name)throws Exception;
 }

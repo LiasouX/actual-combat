@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +11,7 @@
         #error,#errorName{
             color: red;
         }
+
     </style>
 </head>
 <body>
@@ -20,13 +19,21 @@
 <div class="layui-form" id="layuiadmin-app-form-list" lay-filter="layuiadmin-app-form-list" style="padding: 20px 30px 0 0;">
     <label id="error"></label>
     <div class="layui-form-item">
-        <label class="layui-form-label">物资类型</label>
+        <label class="layui-form-label">物资分类</label>
         <div class="layui-input-inline">
-            <select id="selectType" lay-verify="required" name="category">
-                <option value="">--请选择采购物资类型--</option>
+            <select id="selectType"  lay-verify="required" name="category">
+                <option value="">--请选择物资类型--</option>
             </select>
         </div>
     </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">采购人</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" id="name" lay-verify="required" name="name" placeholder="请输入" type="text">
+        </div>
+    </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label">物品名称</label>
         <div class="layui-input-inline">
@@ -34,8 +41,6 @@
         </div>
     </div>
 
-
-    <input autocomplete="off" class="layui-input" id="purse_name" lay-verify="required" name="purse_name" placeholder="请输入" type="hidden">
 
     <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
@@ -47,85 +52,92 @@
     <div class="layui-form-item">
         <label class="layui-form-label">单价</label>
         <div class="layui-input-inline">
-            <input autocomplete="off" class="layui-input" lay-verify="required" name="money" placeholder="请输入" type="text">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="price" placeholder="请输入" type="text">
         </div>
     </div>
-    <div class="layui-form-item" >
-        <label class="layui-form-label">登记人员</label>
+    <div class="layui-inline">
+        <label class="layui-form-label">时间</label>
         <div class="layui-input-inline">
-            <select id="selectOut" lay-filter="output" lay-verify="required" name="apply_name" >
-                <option value="">--请选择登记人员--</option>
-            </select>
+            <input class="layui-input" id="test-laydate-normal-cn" name="time" placeholder="yyyy-MM-dd" type="text">
         </div>
     </div>
     <div class="layui-form-item layui-hide">
-        <input id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit-user" lay-submit type="button" value="确认添加">
+        <input id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit" lay-submit type="button" value="确认添加">
         <input id="layuiadmin-app-form-edit" lay-filter="layuiadmin-app-form-edit" lay-submit type="button" value="确认编辑">
     </div>
 </div>
 
 <script src="../../../layuiadmin/layui/layui.js"></script>
-
-
-
+<script src="../../../js/jquery-3.5.1.js"></script>
 <script>
     layui.config({
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form','laydate'], function(){
+    }).use(['index', 'form'], function(){
         var $ = layui.$
             ,form = layui.form;
-        var $ = layui.$;
-        var laydate = layui.laydate;
-
-        laydate.render({
-            elem: '#test-laydate-normal-cn'
-        });
-
-
         //监听提交
-        form.on('submit(layuiadmin-app-form-submit-user)', function(data){
+        form.on('submit(layuiadmin-app-form-submit)', function(data){
             var field = data.field; //获取提交的字段
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             //post提交，判断是否添加出错！
-            $.post("/account/addAccount",field,function (data){
+            $.post("/purchase/updatePurchase",field,function (data){
                 //controller返回boolean类型，用来判断是否添加错误！
                 if (data){
                     //添加成功
                     parent.layui.table.reload('test-table-page',{}); //重载表格
                     parent.layer.close(index); //再执行关闭
-                    parent.layer.msg("添加成功！")
+                    parent.layer.msg("更新成功！")
                 }else{
                     //添加错误
-                    $("#error").html("采购计划创建失败！")
+                    $("#error").html("更新用户失败！")
                 }
 
             });
         });
+        let qs = getQueryString();//截取url的请求参数
 
-        //加载列表框
-        $.post("/user/loginName",function (data){
-            form.val("layuiadmin-app-form-list",{
-                "purse_name":data.username
-            })
-        });
-        $.post("/user/findByUsername",{"type":"后勤处"},function (data){
-            $.each(data,function (index,item){
-                $("#selectOut").append(new Option(item,item));
 
-            })
-            layui.form.render("select","output");
-        });
+        //加载下拉列表框
         $.post("/matecate/findAll",{"limit":"100000"},function (data){
             $.each(data.data,function (index,item){
-                $("#selectType").append(new Option(item.name,item.code));
+                $("#selectType").append(new Option(item.name,item.code))
             })
             layui.form.render("select");
         });
+        $.get("/purchase/findByMaterial",{"material":qs.material,"name":qs.name,"quantity":qs.quantity},function (data){
+            //表单赋值
+            form.val("layuiadmin-app-form-list",{
+                "category":data.category,
+                "material":data.material,
+                "quantity":data.quantity,
+                "price":data.price,
+                "time":data.timeStr,
+                "name":data.name,
+            })
+        })
+    });
 
+    //网上截取
+    function getQueryString() {
+        var v = "";
+        var qs = location.search.substr(1), // 获取url中"?"符后的字串
+            args = {}, // 保存参数数据的对象
+            items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
+            item = null,
+            len = items.length;
 
-    })
+        for(var i = 0; i < len; i++) {
+            item = items[i].split("=");
+            var name = decodeURIComponent(item[0]),
+                value = decodeURIComponent(item[1]);
+            if(name) {
+                args[name] = value;
+            }
+        }
+        return args;
+    }
 </script>
 </body>
 </html>

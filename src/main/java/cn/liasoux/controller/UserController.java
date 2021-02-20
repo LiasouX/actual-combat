@@ -148,9 +148,8 @@ public class UserController {
 
     @RequestMapping(value = "/user/findByUsername",produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String findByUsername(){
-        List<String> usernames = service.findByUsername("后勤处");
-        System.out.println(usernames);
+    public String findByUsername(String type){
+        List<String> usernames = service.findByUsername(type);
         return JSON.toJSONString(usernames);
     }
 }

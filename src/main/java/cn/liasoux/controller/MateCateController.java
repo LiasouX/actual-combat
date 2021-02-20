@@ -34,7 +34,6 @@ public class MateCateController {
         List<MateCate> mateCates = service.findAll();
         PageInfo info = new PageInfo(mateCates);
         Layui data = Layui.data(info.getTotal(), info.getList());
-        System.out.println(data);
         return data;
     }
 
@@ -81,8 +80,6 @@ public class MateCateController {
     @RequestMapping(value = "/matecate/updateMateCate",produces = "application/json;charset=utf-8")
     @ResponseBody
     public boolean updateMateCate(String cd,MateCate mateCate){
-        System.out.println(mateCate);
-        System.out.println(cd);
         boolean flag = false;
         try {
             flag = service.updateMateCate(mateCate,cd);
@@ -119,7 +116,6 @@ public class MateCateController {
         }else{
             flag = false;
         }
-        System.out.println(flag);
         return flag;
     }
 
