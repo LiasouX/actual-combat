@@ -12,23 +12,6 @@
   <script>
     $(function (){
       $.post("/user/loginName",function (data){
-        // <li class="layui-nav-item" lay-unselect>
-        //   <a href="javascript:;" id="role" layadmin-event="refresh" title="刷新">
-        //     管理员
-        //   </a>
-        // </li>
-        // <li class="layui-nav-item" lay-unselect>
-        //   <a href="javascript:;">
-        //     <cite id="lname">贤心</cite>
-        //   </a>
-        //   <dl class="layui-nav-child">
-        //       <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
-        //   </dl>
-        // </li>
-        // <li class="layui-nav-item" id="xx" lay-unselect>
-        //   <a href="javascript:;" layadmin-event="refresh" title="刷新">
-        //   </a>
-        // </li>
           $("#ullogin").html('<li class="layui-nav-item" lay-unselect>\n' +
                   '  <a href="javascript:;" id="role" layadmin-event="refresh" title="刷新">\n' +
                   '    '+data.type+'\n' +
@@ -44,9 +27,245 @@
                   '</li>\n' +
                   '<li class="layui-nav-item" id="xx" lay-unselect>\n' +
                   '  <a href="javascript:;" layadmin-event="refresh" title="刷新">\n' +
-                  '  </a>')
-      })
+                  '  </a>');
 
+          if (data.type=="管理员"){
+              $("#menu").html("<div class=\"layui-side-scroll\">\n" +
+                      "        <div class=\"layui-logo\" lay-href=\"pic.html\">\n" +
+                      "          <span>疫情物资管理系统</span>\n" +
+                      "        </div>\n" +
+                      "        <!-- 管理员 -->\n" +
+                      "        <ul class=\"layui-nav layui-nav-tree\" id=\"LAY-system-side-menu\" lay-filter=\"layadmin-system-side-menu\" lay-shrink=\"all\">\n" +
+                      "          <li class=\"layui-nav-item\" data-name=\"component\">\n" +
+                      "            <a href=\"javascript:;\" lay-direction=\"4\" lay-tips=\"人员管理\">\n" +
+                      "              <i class=\"layui-icon layui-icon-user\"></i>\n" +
+                      "              <cite>人员管理</cite>\n" +
+                      "            </a>\n" +
+                      "            <dl class=\"layui-nav-child\">\n" +
+                      "              <dd data-name=\"button\">\n" +
+                      "                <a lay-href=\"admin/UserOperate/userIndex.html\">人员信息</a>\n" +
+                      "              </dd>\n" +
+                      "            </dl>\n" +
+                      "          </li>\n" +
+                      "\n" +
+                      "\n" +
+                      "          <li class=\"layui-nav-item\" data-name=\"component\">\n" +
+                      "            <a href=\"javascript:;\" lay-direction=\"4\" lay-tips=\"物资分类\">\n" +
+                      "              <i class=\"layui-icon layui-icon-component\"></i>\n" +
+                      "              <cite>物资分类</cite>\n" +
+                      "            </a>\n" +
+                      "            <dl class=\"layui-nav-child\">\n" +
+                      "              <dd data-name=\"button\">\n" +
+                      "                <a lay-href=\"admin/matecate/mate_cate.html\">物资分类</a>\n" +
+                      "              </dd>\n" +
+                      "            </dl>\n" +
+                      "          </li>\n" +
+                      "\n" +
+                      "\n" +
+                      "          <li class=\"layui-nav-item\" data-name=\"component\">\n" +
+                      "            <a href=\"javascript:;\" lay-direction=\"4\" lay-tips=\"物资采购\">\n" +
+                      "              <i class=\"layui-icon layui-icon-templeate-1\"></i>\n" +
+                      "              <cite>物资采购</cite>\n" +
+                      "            </a>\n" +
+                      "            <dl class=\"layui-nav-child\">\n" +
+                      "              <dd data-name=\"button\">\n" +
+                      "                <a lay-href=\"admin/purchase/purchaseIndex.html\">物资采购</a>\n" +
+                      "              </dd>\n" +
+                      "            </dl>\n" +
+                      "          </li>\n" +
+                      "\n" +
+                      "\n" +
+                      "          <li class=\"layui-nav-item\" data-name=\"component\">\n" +
+                      "            <a href=\"javascript:;\" lay-direction=\"4\" lay-tips=\"入库登记\">\n" +
+                      "              <i class=\"layui-icon layui-icon-survey\"></i>\n" +
+                      "              <cite>入库登记</cite>\n" +
+                      "            </a>\n" +
+                      "            <dl class=\"layui-nav-child\">\n" +
+                      "              <dd data-name=\"button\">\n" +
+                      "                <a lay-href=\"admin/intput/intputIndex.html\">入库登记</a>\n" +
+                      "              </dd>\n" +
+                      "            </dl>\n" +
+                      "          </li>\n" +
+                      "\n" +
+                      "\n" +
+                      "          <li class=\"layui-nav-item\" data-name=\"component\">\n" +
+                      "            <a href=\"javascript:;\" lay-direction=\"4\" lay-tips=\"物资统计\">\n" +
+                      "              <i class=\"layui-icon layui-icon-chart\"></i>\n" +
+                      "              <cite>物资统计</cite>\n" +
+                      "            </a>\n" +
+                      "            <dl class=\"layui-nav-child\">\n" +
+                      "              <dd data-name=\"button\">\n" +
+                      "                <a lay-href=\"admin/page.html\">物资统计</a>\n" +
+                      "              </dd>\n" +
+                      "            </dl>\n" +
+                      "          </li>\n" +
+                      "          <li class=\"layui-nav-item\" data-name=\"component\">\n" +
+                      "            <a href=\"javascript:;\" lay-direction=\"4\" lay-tips=\"申领管理\">\n" +
+                      "              <i class=\"layui-icon layui-icon-form\"></i>\n" +
+                      "              <cite>申领管理</cite>\n" +
+                      "            </a>\n" +
+                      "            <dl class=\"layui-nav-child\">\n" +
+                      "              <dd data-name=\"button\">\n" +
+                      "                <a lay-href=\"admin/output/outputIndex.html\">申领管理</a>\n" +
+                      "              </dd>\n" +
+                      "            </dl>\n" +
+                      "          </li>\n" +
+                      "\n" +
+                      "\n" +
+                      "          <li class=\"layui-nav-item\" data-name=\"component\">\n" +
+                      "            <a href=\"javascript:;\" lay-direction=\"4\" lay-tips=\"财务报销\">\n" +
+                      "              <i class=\"layui-icon layui-icon-dollar\"></i>\n" +
+                      "              <cite>财务报销</cite>\n" +
+                      "            </a>\n" +
+                      "            <dl class=\"layui-nav-child\">\n" +
+                      "              <dd data-name=\"button\">\n" +
+                      "                <a lay-href=\"admin/account/accountIndex.html\">财务报销</a>\n" +
+                      "              </dd>\n" +
+                      "            </dl>\n" +
+                      "          </li>\n" +
+                      "        </ul>\n" +
+                      "      </div>")
+          }
+          else if (data.type=="采购员"){
+            $("#menu").html('<div class="layui-side-scroll">\n' +
+                    '        <div class="layui-logo" lay-href="pic.html">\n' +
+                    '          <span>疫情物资管理系统</span>\n' +
+                    '        </div>\n' +
+                    '        <!-- 管理员 -->\n' +
+                    '        <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">\n' +
+                    '\n' +
+                    '          <li class="layui-nav-item" data-name="component">\n' +
+                    '            <a href="javascript:;" lay-direction="4" lay-tips="物资分类">\n' +
+                    '              <i class="layui-icon layui-icon-component"></i>\n' +
+                    '              <cite>物资分类</cite>\n' +
+                    '            </a>\n' +
+                    '            <dl class="layui-nav-child">\n' +
+                    '              <dd data-name="button">\n' +
+                    '                <a lay-href="purchase/matecate/macaIndex.html">物资分类</a>\n' +
+                    '              </dd>\n' +
+                    '            </dl>\n' +
+                    '          </li>\n' +
+                    '\n' +
+                    '          <li class="layui-nav-item" data-name="component">\n' +
+                    '            <a href="javascript:;" lay-direction="4" lay-tips="物资采购">\n' +
+                    '              <i class="layui-icon layui-icon-templeate-1"></i>\n' +
+                    '              <cite>物资采购</cite>\n' +
+                    '            </a>\n' +
+                    '            <dl class="layui-nav-child">\n' +
+                    '              <dd data-name="button">\n' +
+                    '                <a lay-href="purchase/purchase/purchaseIndex.html">物资采购</a>\n' +
+                    '              </dd>\n' +
+                    '            </dl>\n' +
+                    '          </li>\n' +
+                    '\n' +
+                    '          <li class="layui-nav-item" data-name="component">\n' +
+                    '            <a href="javascript:;" lay-direction="4" lay-tips="财务报销">\n' +
+                    '              <i class="layui-icon layui-icon-dollar"></i>\n' +
+                    '              <cite>财务报销</cite>\n' +
+                    '            </a>\n' +
+                    '            <dl class="layui-nav-child">\n' +
+                    '              <dd data-name="button">\n' +
+                    '                <a lay-href="purchase/account/accountIndex.html">财务报销</a>\n' +
+                    '              </dd>\n' +
+                    '            </dl>\n' +
+                    '          </li>\n' +
+                    '        </ul>\n' +
+                    '      </div>')
+          }
+          else if (data.type=="后勤处"){
+              $("#menu").html('<div class="layui-side-scroll">\n' +
+                      '        <div class="layui-logo" lay-href="pic.html">\n' +
+                      '          <span>疫情物资管理系统</span>\n' +
+                      '        </div>\n' +
+                      '        <!-- 管理员 -->\n' +
+                      '        <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">\n' +
+                      '\n' +
+                      '          <li class="layui-nav-item" data-name="component">\n' +
+                      '            <a href="javascript:;" lay-direction="4" lay-tips="物资采购">\n' +
+                      '              <i class="layui-icon layui-icon-component"></i>\n' +
+                      '              <cite>物资采购</cite>\n' +
+                      '            </a>\n' +
+                      '            <dl class="layui-nav-child">\n' +
+                      '              <dd data-name="button">\n' +
+                      '                <a lay-href="output/purchase/purchaseIndex.html">物资采购</a>\n' +
+                      '              </dd>\n' +
+                      '            </dl>\n' +
+                      '          </li>\n' +
+                      '\n' +
+                      '          <li class="layui-nav-item" data-name="component">\n' +
+                      '            <a href="javascript:;" lay-direction="4" lay-tips="入库登记">\n' +
+                      '              <i class="layui-icon layui-icon-survey"></i>\n' +
+                      '              <cite>入库登记</cite>\n' +
+                      '            </a>\n' +
+                      '            <dl class="layui-nav-child">\n' +
+                      '              <dd data-name="button">\n' +
+                      '                <a lay-href="output/intput/intputIndex.html">入库登记</a>\n' +
+                      '              </dd>\n' +
+                      '            </dl>\n' +
+                      '          </li>\n' +
+                      '\n' +
+                      '          <li class="layui-nav-item" data-name="component">\n' +
+                      '            <a href="javascript:;" lay-direction="4" lay-tips="物资统计">\n' +
+                      '              <i class="layui-icon layui-icon-chart"></i>\n' +
+                      '              <cite>物资统计</cite>\n' +
+                      '            </a>\n' +
+                      '            <dl class="layui-nav-child">\n' +
+                      '              <dd data-name="button">\n' +
+                      '                <a lay-href="purchase/account/accountIndex.html">物资统计</a>\n' +
+                      '              </dd>\n' +
+                      '            </dl>\n' +
+                      '          </li>\n' +
+                      '\n' +
+                      '          <li class="layui-nav-item" data-name="component">\n' +
+                      '            <a href="javascript:;" lay-direction="4" lay-tips="申领记录">\n' +
+                      '              <i class="layui-icon layui-icon-form"></i>\n' +
+                      '              <cite>申领记录</cite>\n' +
+                      '            </a>\n' +
+                      '            <dl class="layui-nav-child">\n' +
+                      '              <dd data-name="button">\n' +
+                      '                <a lay-href="output/output/outputIndex.html">申领记录</a>\n' +
+                      '              </dd>\n' +
+                      '            </dl>\n' +
+                      '          </li>\n' +
+                      '        </ul>\n' +
+                      '      </div>')
+          }
+          else if (data.type=="财务处"){
+              $("#menu").html('<div class="layui-side-scroll">\n' +
+                      '        <div class="layui-logo" lay-href="pic.html">\n' +
+                      '          <span>疫情物资管理系统</span>\n' +
+                      '        </div>\n' +
+                      '        <!-- 管理员 -->\n' +
+                      '        <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">\n' +
+                      '\n' +
+                      '          <li class="layui-nav-item" data-name="component">\n' +
+                      '            <a href="javascript:;" lay-direction="4" lay-tips="物资采购">\n' +
+                      '              <i class="layui-icon layui-icon-component"></i>\n' +
+                      '              <cite>物资采购</cite>\n' +
+                      '            </a>\n' +
+                      '            <dl class="layui-nav-child">\n' +
+                      '              <dd data-name="button">\n' +
+                      '                <a lay-href="account/purchase/purchaseIndex.html">物资采购</a>\n' +
+                      '              </dd>\n' +
+                      '            </dl>\n' +
+                      '          </li>\n' +
+                      '\n' +
+                      '          <li class="layui-nav-item" data-name="component">\n' +
+                      '            <a href="javascript:;" lay-direction="4" lay-tips="财务报销">\n' +
+                      '              <i class="layui-icon layui-icon-dollar"></i>\n' +
+                      '              <cite>财务报销</cite>\n' +
+                      '            </a>\n' +
+                      '            <dl class="layui-nav-child">\n' +
+                      '              <dd data-name="button">\n' +
+                      '                <a lay-href="account/account/accountIndex.html">财务报销</a>\n' +
+                      '              </dd>\n' +
+                      '            </dl>\n' +
+                      '          </li>\n' +
+                      '\n' +
+                      '        </ul>\n' +
+                      '      </div>')
+          }
+      })
 
       $("#xx").css({
         visibility: "hidden"
@@ -79,126 +298,22 @@
     </div>
 
     <!-- 侧边菜单 -->
-    <div class="layui-side layui-side-menu">
+    <div class="layui-side layui-side-menu" id="menu">
       <div class="layui-side-scroll">
         <div class="layui-logo" lay-href="pic.html">
           <span>疫情物资管理系统</span>
         </div>
         <!-- 管理员 -->
 <!--        <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">-->
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="人员管理">-->
-<!--              <i class="layui-icon layui-icon-user"></i>-->
-<!--              <cite>人员管理</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="admin/UserOperate/userIndex.html">人员信息</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-
-
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="物资分类">-->
-<!--              <i class="layui-icon layui-icon-component"></i>-->
-<!--              <cite>物资分类</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="admin/matecate/mate_cate.html">物资分类</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-
 
 <!--          <li class="layui-nav-item" data-name="component">-->
 <!--            <a href="javascript:;" lay-direction="4" lay-tips="物资采购">-->
-<!--              <i class="layui-icon layui-icon-templeate-1"></i>-->
+<!--              <i class="layui-icon layui-icon-component"></i>-->
 <!--              <cite>物资采购</cite>-->
 <!--            </a>-->
 <!--            <dl class="layui-nav-child">-->
 <!--              <dd data-name="button">-->
-<!--                <a lay-href="admin/purchase/purchaseIndex.html">物资采购</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-
-
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="入库登记">-->
-<!--              <i class="layui-icon layui-icon-survey"></i>-->
-<!--              <cite>入库登记</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="admin/intput/intputIndex.html">入库登记</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-
-
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="物资统计">-->
-<!--              <i class="layui-icon layui-icon-chart"></i>-->
-<!--              <cite>物资统计</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="admin/page.html">物资统计</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="申领管理">-->
-<!--              <i class="layui-icon layui-icon-form"></i>-->
-<!--              <cite>申领管理</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="admin/output/outputIndex.html">申领管理</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-
-
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="财务报销">-->
-<!--              <i class="layui-icon layui-icon-dollar"></i>-->
-<!--              <cite>财务报销</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="admin/account/accountIndex.html">财务报销</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-<!--        </ul>-->
-
-
-<!--  采购员-->
-<!--        <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">-->
-
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="物资分类">-->
-<!--              <i class="layui-icon layui-icon-component"></i>-->
-<!--              <cite>物资分类</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="purchase/matecate/macaIndex.html">物资分类</a>-->
-<!--              </dd>-->
-<!--            </dl>-->
-<!--          </li>-->
-
-<!--          <li class="layui-nav-item" data-name="component">-->
-<!--            <a href="javascript:;" lay-direction="4" lay-tips="物资采购">-->
-<!--              <i class="layui-icon layui-icon-templeate-1"></i>-->
-<!--              <cite>物资采购</cite>-->
-<!--            </a>-->
-<!--            <dl class="layui-nav-child">-->
-<!--              <dd data-name="button">-->
-<!--                <a lay-href="purchase/purchase/purchaseIndex.html">物资采购</a>-->
+<!--                <a lay-href="account/purchase/purchaseIndex.html">物资采购</a>-->
 <!--              </dd>-->
 <!--            </dl>-->
 <!--          </li>-->
@@ -210,68 +325,24 @@
 <!--            </a>-->
 <!--            <dl class="layui-nav-child">-->
 <!--              <dd data-name="button">-->
-<!--                <a lay-href="purchase/account/accountIndex.html">财务报销</a>-->
+<!--                <a lay-href="account/account/accountIndex.html">财务报销</a>-->
 <!--              </dd>-->
 <!--            </dl>-->
 <!--          </li>-->
+
 <!--        </ul>-->
-
-<!--        后勤处-->
-
-        <ul class="layui-nav layui-nav-tree" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu" lay-shrink="all">
-
-          <li class="layui-nav-item" data-name="component">
-            <a href="javascript:;" lay-direction="4" lay-tips="物资采购">
-              <i class="layui-icon layui-icon-component"></i>
-              <cite>物资采购</cite>
-            </a>
-            <dl class="layui-nav-child">
-              <dd data-name="button">
-                <a lay-href="output/purchase/purchaseIndex.html">物资采购</a>
-              </dd>
-            </dl>
-          </li>
-
-          <li class="layui-nav-item" data-name="component">
-            <a href="javascript:;" lay-direction="4" lay-tips="入库登记">
-              <i class="layui-icon layui-icon-survey"></i>
-              <cite>入库登记</cite>
-            </a>
-            <dl class="layui-nav-child">
-              <dd data-name="button">
-                <a lay-href="output/intput/intputIndex.html">入库登记</a>
-              </dd>
-            </dl>
-          </li>
-
-          <li class="layui-nav-item" data-name="component">
-            <a href="javascript:;" lay-direction="4" lay-tips="物资统计">
-              <i class="layui-icon layui-icon-chart"></i>
-              <cite>物资统计</cite>
-            </a>
-            <dl class="layui-nav-child">
-              <dd data-name="button">
-                <a lay-href="purchase/account/accountIndex.html">物资统计</a>
-              </dd>
-            </dl>
-          </li>
-
-          <li class="layui-nav-item" data-name="component">
-            <a href="javascript:;" lay-direction="4" lay-tips="申领记录">
-              <i class="layui-icon layui-icon-form"></i>
-              <cite>申领记录</cite>
-            </a>
-            <dl class="layui-nav-child">
-              <dd data-name="button">
-                <a lay-href="output/output/outputIndex.html">申领记录</a>
-              </dd>
-            </dl>
-          </li>
-        </ul>
-
       </div>
     </div>
 
+
+    <!-- 采购员 -->
+
+
+    <!-- 后勤处 -->
+
+
+
+    <!-- 财务处 -->
 
 
     <!-- 页面标签 -->

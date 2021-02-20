@@ -1,0 +1,117 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link href="../../../layuiadmin/layui/css/layui.css" media="all" rel="stylesheet">
+    <style>
+        #error,#errorName{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-form" id="layuiadmin-app-form-list" lay-filter="layuiadmin-app-form-list" style="padding: 20px 30px 0 0;">
+    <label id="error"></label>
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <label class="layui-form-label">编号</label>
+            <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="username" lay-verify="required" name="no" placeholder="请输入" type="text">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" lay-verify="required" name="name" placeholder="请输入" type="text">
+            </div>
+        </div>
+        <label class="layui-form-label">物资类型</label>
+        <div class="layui-input-inline">
+            <select id="selectType" lay-verify="required" name="category">
+                <option value="">--请选择采购物资类型--</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">物资名称</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" id="" name="material" placeholder="请输入" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">物资数量</label>
+        <div class="layui-input-inline">
+            <input autocomplete="off" class="layui-input" lay-verify="required" name="quantity" placeholder="请输入" type="text">
+        </div>
+    </div>
+
+
+    <input autocomplete="off" class="layui-input" lay-verify="required" name="apply_time_str" placeholder="请输入" type="text">
+
+
+
+    <div class="layui-form-item layui-hide">
+        <input id="layuiadmin-app-form-submit" lay-filter="layuiadmin-app-form-submit-user" lay-submit type="button" value="确认添加">
+        <input id="layuiadmin-app-form-edit" lay-filter="layuiadmin-app-form-edit" lay-submit type="button" value="确认编辑">
+    </div>
+</div>
+
+<script src="../../../layuiadmin/layui/layui.js"></script>
+
+
+
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form','laydate'], function(){
+        var $ = layui.$
+            ,form = layui.form;
+
+
+        //监听提交
+        form.on('submit(layuiadmin-app-form-submit-user)', function(data){
+            var field = data.field; //获取提交的字段
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            //post提交，判断是否添加出错！
+            console.log(field);
+            $.post("/output/addOutput",field,function (data){
+                //controller返回boolean类型，用来判断是否添加错误！
+                if (data){
+                    //添加成功
+                    parent.layui.table.reload('test-table-page',{}); //重载表格
+                    parent.layer.close(index); //再执行关闭
+                    parent.layer.msg("添加成功！")
+                }else{
+                    //添加错误
+                    parent.layer.msg("添加失败！")
+                }
+
+            });
+        });
+
+        //加载列表框
+            form.val("layuiadmin-app-form-list",{
+                "apply_time_str":new Date().getFullYear()+"-"+new Date().getUTCMonth()+"-"+new Date().getUTCDate()
+            })
+        $.post("/matecate/findAll",{"limit":"100000"},function (data){
+            $.each(data.data,function (index,item){
+                $("#selectType").append(new Option(item.name,item.code));
+            })
+            layui.form.render("select");
+        });
+
+
+    })
+</script>
+</body>
+</html>
