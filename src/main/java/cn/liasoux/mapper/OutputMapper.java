@@ -66,7 +66,7 @@ public interface OutputMapper {
      * @return
      */
     @Update("update Output set no = #{int.no},name = #{int.name},category = #{int.category}," +
-            "material = #{int.material},quantity = #{int.quantity},apply_time = #{int.apply_time} " +
+            "material = #{int.material},quantity = #{int.quantity},apply_time = #{int.apply_time},apply_status = #{int.apply_status} " +
             "where material = #{mate} and name = #{name}")
     boolean updateOutput(@Param("int") Output output, @Param("mate") String mate, @Param("name") String name)throws Exception;
 

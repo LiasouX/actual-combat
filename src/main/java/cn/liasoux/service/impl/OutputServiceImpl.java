@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OutputServiceImpl implements OutputService {
@@ -43,7 +44,21 @@ public class OutputServiceImpl implements OutputService {
      */
     @Override
     public boolean updateStatus(String status, String name, String material,int quan) throws Exception {
-        return mapper.updateStatus(status, name, material);
+        wuzi purchase = service.findPurchase();
+        Set<String> strings = purchase.keySet();
+        for (String string : strings) {
+            if (material.equals(string)){
+
+                Integer integer = purchase.get(string);
+                Integer integer1 = (Integer) quan;
+                int i = integer - integer1;
+                if (i>=0){
+                    return mapper.updateStatus(status, name, material);
+                }
+            }
+        }
+        return false;
+
     }
 
 
