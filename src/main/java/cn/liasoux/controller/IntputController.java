@@ -2,7 +2,9 @@ package cn.liasoux.controller;
 
 import cn.liasoux.Untils.Layui;
 import cn.liasoux.pojo.Intput;
+import cn.liasoux.pojo.wuzi;
 import cn.liasoux.service.IntputService;
+import cn.liasoux.service.OutputService;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class IntputController {
@@ -20,6 +24,8 @@ public class IntputController {
     @Autowired
     private IntputService service;
 
+    @Autowired
+    private OutputService output;
 
     /**
      * 查询全部
@@ -107,7 +113,6 @@ public class IntputController {
     @ResponseBody
     public String findByIntput(String mate, String quan, String name) throws Exception {
         Intput byIntput = service.findByIntput(mate, quan, name);
-        System.out.println(mate+"="+quan+"="+name);
         return JSON.toJSONString(byIntput);
     }
 
@@ -126,9 +131,22 @@ public class IntputController {
 
     @RequestMapping("/intput/findWuzi")
     @ResponseBody
-    public List<String> findWuzi(){
-        List<String> purchase = service.findPurchase();
-        System.out.println(purchase);
-        return purchase;
+    public Layui findWuzi(@RequestParam(defaultValue = "1")int page,
+                                 @RequestParam(value = "limit",defaultValue = "10") int size){
+        PageHelper.startPage(page,size);
+        wuzi purchase = output.findAll2("Y");
+        Set<String> strings = purchase.keySet();
+        ArrayList<Intput> intputs = new ArrayList<Intput>();
+        int i = 0;
+        for (String string : strings) {
+            Intput intput = new Intput();
+            intput.setMaterial(string);
+            intput.setQuantity(purchase.get(string));
+            intputs.add(i,intput);
+            i++;
+        }
+        PageInfo info = new PageInfo(intputs);
+        Layui layui = Layui.data(info.getTotal(), info.getList());
+        return layui;
     }
 }

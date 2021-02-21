@@ -72,10 +72,14 @@
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'contlist', 'table'], function(){
+    }).use(['index', 'contlist', 'table','element'], function(){
         var table = layui.table
             ,form = layui.form;
-
+        var element = layui.element;
+        element.on('tab(tabcard)', function (data) {
+            var src = $(".layui-tab-item.layui-show").find("iframe").attr("src");
+            $(".layui-tab-item.layui-show").find("iframe").attr("src", src);
+        });
         var $ = layui.$;
         //自动渲染表格
         var findRender = table.render({
@@ -105,7 +109,7 @@
             var data = obj.data;
             if(obj.event === 'yes'){
                 layer.confirm('确定取消审核吗？', function(index){
-                    $.post("/output/updateStatus",{"status":"N","name":data.name,"material":data.material},function (data){
+                    $.post("/output/updateStatus",{"status":"N","name":data.name,"material":data.material,"quan":data.quantity},function (data){
                         if (data){
                             layer.close(index);
                             //重载表格

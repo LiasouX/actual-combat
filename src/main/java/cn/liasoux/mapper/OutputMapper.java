@@ -41,7 +41,7 @@ public interface OutputMapper {
      * @return
      */
     @Update("update output set apply_status = #{stat} where name = #{name} and material = #{mate}")
-    boolean updateStatus(@Param("stat") String status,@Param("name") String name,@Param("mate") String material,@Param("quan") int quan)throws Exception;
+    boolean updateStatus(@Param("stat") String status,@Param("name") String name,@Param("mate") String material)throws Exception;
 
 
 
@@ -90,4 +90,12 @@ public interface OutputMapper {
      */
     @Select("select * from Output where material = #{mate} and name = #{name}")
     Output findByOutput(@Param("mate") String mate,@Param("name") String name)throws Exception;
+
+    /**
+     * 查询已经申领的信息
+     * @param y
+     * @return
+     */
+    @Select("select * from output where apply_status = #{y}")
+    List<Output> findAll2(String y);
 }

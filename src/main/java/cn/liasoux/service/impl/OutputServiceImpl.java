@@ -2,6 +2,8 @@ package cn.liasoux.service.impl;
 
 import cn.liasoux.mapper.OutputMapper;
 import cn.liasoux.pojo.Output;
+import cn.liasoux.pojo.wuzi;
+import cn.liasoux.service.IntputService;
 import cn.liasoux.service.OutputService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ public class OutputServiceImpl implements OutputService {
     @Autowired
     private OutputMapper mapper;
 
+    @Autowired
+    private IntputService service;
     /**
      * 查询全部
      * @param name
@@ -39,14 +43,7 @@ public class OutputServiceImpl implements OutputService {
      */
     @Override
     public boolean updateStatus(String status, String name, String material,int quan) throws Exception {
-
-
-        if (quan>=0){
-            return mapper.updateStatus(status, name, material,quan);
-        }else{
-            return  false;
-        }
-
+        return mapper.updateStatus(status, name, material);
     }
 
 
@@ -108,6 +105,25 @@ public class OutputServiceImpl implements OutputService {
     @Override
     public Output findByOutput(String mate, String name) throws Exception {
         return mapper.findByOutput(mate, name);
+    }
+
+    /**
+     * 全部物资公共方法
+     * @param y
+     * @return
+     */
+    @Override
+    public wuzi findAll2(String y) {
+        List<Output> list = mapper.findAll2(y);
+        wuzi purchase = service.findPurchase();
+        for (Output output : list) {
+            int quantity =(Integer) output.getQuantity();
+            Integer integer = purchase.get(output.getMaterial())-quantity;
+            if (integer>=0){
+                purchase.put(output.getMaterial(),integer);
+            }
+        }
+        return purchase;
     }
 
 

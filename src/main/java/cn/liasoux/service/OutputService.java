@@ -1,6 +1,7 @@
 package cn.liasoux.service;
 
 import cn.liasoux.pojo.Output;
+import cn.liasoux.pojo.wuzi;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface OutputService {
      * 修改审核状态
      * @return
      */
-    boolean updateStatus(String status, String name,String material,int quan) throws Exception;
+    boolean updateStatus(String status, String name, String material, int quan) throws Exception;
 
 
 
@@ -58,4 +59,12 @@ public interface OutputService {
      * @throws Exception
      */
     Output findByOutput( String mate,String name)throws Exception;
+
+
+    /**
+     * 查询已经申领的信息
+     * @param y
+     * @return
+     */
+    wuzi findAll2(String y);
 }

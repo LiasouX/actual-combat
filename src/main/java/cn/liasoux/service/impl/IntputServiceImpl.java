@@ -2,6 +2,7 @@ package cn.liasoux.service.impl;
 
 import cn.liasoux.mapper.IntputMapper;
 import cn.liasoux.pojo.Intput;
+import cn.liasoux.pojo.wuzi;
 import cn.liasoux.service.IntputService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,19 +106,20 @@ public class IntputServiceImpl implements IntputService {
      * @return
      */
     @Override
-    public List<String> findPurchase() {
+    public wuzi findPurchase() {
         List<Intput> intputs = mapper.findPurchase();
-        List<String> ins = null;
+        wuzi add= new wuzi();
         for (int i = 0; i < intputs.size(); i++) {
             for (int j = i+1; j < intputs.size(); j++) {
-                if (intputs.get(i).getMaterial()==intputs.get(j).getMaterial()){
+                if (intputs.get(i).getMaterial().equals(intputs.get(j).getMaterial())){
                     int i1 = intputs.get(i).getQuantity() + intputs.get(j).getQuantity();
-                    ins.set(i1,intputs.get(i).getMaterial());
+                    intputs.get(i).setQuantity(i1);
                     intputs.remove(j);
                 }
             }
+            add.put(intputs.get(i).getMaterial(), intputs.get(i).getQuantity());
         }
-        return ins;
+        return add;
     }
 
 

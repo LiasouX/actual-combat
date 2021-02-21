@@ -1,6 +1,7 @@
 package cn.liasoux.service;
 
 import cn.liasoux.pojo.Intput;
+import cn.liasoux.pojo.wuzi;
 
 import java.util.List;
 
@@ -63,5 +64,5 @@ public interface IntputService {
      * 查询物资数量
      * @return
      */
-    List<String> findPurchase();
+    wuzi findPurchase();
 }

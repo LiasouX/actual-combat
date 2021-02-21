@@ -22,6 +22,7 @@ cn\liasoux\service\UserService.class
 cn\liasoux\pojo\User.class
 cn\liasoux\mapper\PurchaseMapper.class
 cn\liasoux\pojo\MateCate.class
+cn\liasoux\pojo\wuzi.class
 cn\liasoux\service\PurchaseService.class
 cn\liasoux\service\impl\PurchaseServiceImpl.class
 cn\liasoux\controller\IntputController.class
