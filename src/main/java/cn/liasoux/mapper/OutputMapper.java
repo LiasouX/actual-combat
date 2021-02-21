@@ -41,7 +41,7 @@ public interface OutputMapper {
      * @return
      */
     @Update("update output set apply_status = #{stat} where name = #{name} and material = #{mate}")
-    boolean updateStatus(@Param("stat") String status,@Param("name") String name,@Param("mate") String material)throws Exception;
+    boolean updateStatus(@Param("stat") String status,@Param("name") String name,@Param("mate") String material,@Param("quan") int quan)throws Exception;
 
 
 

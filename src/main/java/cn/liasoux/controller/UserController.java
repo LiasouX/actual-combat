@@ -21,20 +21,35 @@ public class UserController {
     @Autowired
     private UserService service;
 
-
+    /**
+     * 默认访问登录页面
+     * @return
+     */
     @RequestMapping("")
     public String toLogin(){
         return "login";
     }
 
 
-
+    /**
+     * 存储session
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/user/loginName",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String loginName(HttpSession session){
         return JSON.toJSONString(session.getAttribute("logUser"));
     }
 
+    /**
+     * 登录判断
+     * @param username
+     * @param password
+     * @param role
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/user/login",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String login(String username, String password, String role, HttpSession session){
@@ -145,7 +160,11 @@ public class UserController {
         return "forward:views/admin/UserOperate/updateUser.html";
     }
 
-
+    /**
+     * 查询
+     * @param type
+     * @return
+     */
     @RequestMapping(value = "/user/findByUsername",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String findByUsername(String type){

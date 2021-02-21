@@ -82,4 +82,11 @@ public interface IntputMapper {
      */
     @Select("select * from intput where material = #{mate} and quantity = #{quan} and purse_name = #{name}")
     Intput findByIntput(@Param("mate") String mate,@Param("quan") String quan,@Param("name") String name)throws Exception;
+
+    /**
+     * 查询物资数量
+     * @return
+     */
+    @Select("select * from intput")
+    List<Intput> findPurchase();
 }

@@ -27,12 +27,7 @@
                     <div class="layui-input-inline">
                         <select id="selectType" lay-filter="selectType" name="label">
                             <option value="">请选择标签</option>
-                            <option value="1"></option>
-                            <option value="2"></option>-->
-<!--                            <option value="管理员">管理员</option>-->
-<!--                            <option value="采购员">采购员</option>-->
-<!--                            <option value="后勤处">后勤处</option>-->
-<!--                            <option value="财务处">财务处</option>-->
+
                         </select>
                     </div>
                 </div>
@@ -48,13 +43,6 @@
 
             <table class="layui-hide layui-bg-green" id="test-table-page" lay-filter="test-table-page"></table>
             <!--        <table id="LAY-app-content-list" lay-filter="LAY-app-content-list"></table>-->
-            <script id="buttonTpl" type="text/html">
-                {{#if(d.status == 'Y'){}}
-                <button class="layui-btn layui-btn-xs" lay-event="yes">已报销</button>
-                {{# } else {}}
-                <button class="layui-btn layui-btn-primary layui-btn-xs" lay-event="no">报销中</button>
-                {{# }}}
-            </script>
         </div>
     </div>
 </div>
@@ -76,36 +64,27 @@
             //选择元素
             elem: '#test-table-page'
             //请求地址
-            ,url: "/account/findAll"
+            ,url: "/purchase/findAll"
             //表格头信息
             ,cols: [[
                 {field: 'aa',type:"numbers"}
                 ,{field:'mateName', title: '物资分类'}
-                ,{field:'material',  title: '物资名称'}
-                ,{field:'quantity',  title: '采购数量',sort: true}
-                ,{field:'money',  title: '采购单价',sort: true}
-                ,{field:'purse_name',  title: '采购人员',sort: true}
-                ,{field:'apply_name',  title: '审核人员',sort: true}
-                ,{field:'status',  title: '报销状态',templet: '#buttonTpl'}
-
+                ,{field:'material', title: '物资名称'}
+                ,{field:'quantity', title: '采购数量', sort: true}
+                ,{field:'price',  title: '采购价格',sort: true}
+                ,{field:'time',  title: '采购时间',templet:"<div>{{layui.util.toDateString(d.time, 'yyyy-MM-dd')}}</div> }",sort: true}
+                ,{field:'name',  title: '采购人员'}
             ]]
             //页数
             ,page:true
             //条数
             ,limit:10
         });
-        table.on('tool(test-table-page)',function (obj){
-            var data = obj.data;
-            if(obj.event === 'yes'){
-                layer.msg('没有权限！！！');
-            } else if(obj.event === 'no'){
-                layer.msg('没有权限！！！');
-            }
-        })
+
         //加载列表框
-        $.post("/matecate/findAll",{"limit":"100000"},function (data){
+        $.post("/matecate/findAll",{"limit":"1000000"},function (data){
             $.each(data.data,function (index,item){
-                $("#selectType").append(new Option(item.name,item.code));
+                $("#selectType").append(new Option(item.name,item.code))
             })
             layui.form.render("select");
         });

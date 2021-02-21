@@ -120,7 +120,7 @@
                 });
             } else if(obj.event === 'no'){
                 layer.confirm('确定取消审核吗？', function(index){
-                    $.post("/output/updateStatus",{"status":"Y","name":data.name,"material":data.material},function (data){
+                    $.post("/output/updateStatus",{"status":"Y","name":data.name,"material":data.material,"quan":data.quantity},function (data){
                         if (data){
                             layer.close(index);
                             //重载表格

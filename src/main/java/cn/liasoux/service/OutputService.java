@@ -18,7 +18,7 @@ public interface OutputService {
      * 修改审核状态
      * @return
      */
-    boolean updateStatus(String status, String name,String material) throws Exception;
+    boolean updateStatus(String status, String name,String material,int quan) throws Exception;
 
 
 

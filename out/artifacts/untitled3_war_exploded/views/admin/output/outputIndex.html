@@ -97,34 +97,9 @@
         table.on('tool(test-table-page)',function (obj){
             var data = obj.data;
             if(obj.event === 'yes'){
-                layer.confirm('确定取消审核吗？', function(index){
-                    $.post("/output/updateStatus",{"status":"N","name":data.name,"material":data.material},function (data){
-                        if (data){
-                            layer.close(index);
-                            //重载表格
-                            findRender.reload();
-                            //成功提示信息！
-                            layer.msg('审核状态已修改');
-                        }else{
-                            layer.msg('审核状态修改失败！！！');
-                        }
-
-                    })
-                });
+                layer.msg('没有权限！！！');
             } else if(obj.event === 'no'){
-                layer.confirm('确定取消审核吗？', function(index){
-                    $.post("/output/updateStatus",{"status":"Y","name":data.name,"material":data.material},function (data){
-                        if (data){
-                            layer.close(index);
-                            //重载表格
-                            findRender.reload();
-                            //成功提示信息！
-                            layer.msg('审核状态已修改');
-                        }else{
-                            layer.msg('审核状态修改失败！！！');
-                        }
-                    })
-                });
+                layer.msg('没有权限！！！');;
             }
         })
         //加载列表框

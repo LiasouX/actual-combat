@@ -111,10 +111,24 @@ public class IntputController {
         return JSON.toJSONString(byIntput);
     }
 
-
+    /**
+     * 跳转网页
+     * @param mate
+     * @param quan
+     * @param name
+     * @return
+     */
     @RequestMapping("/intput/tpUpdateHtml")
     public String tpUpdateHtml(String mate, String quan, String name){
         return "forward:/views/output/intput/updateIntput.html";
     }
 
+
+    @RequestMapping("/intput/findWuzi")
+    @ResponseBody
+    public List<String> findWuzi(){
+        List<String> purchase = service.findPurchase();
+        System.out.println(purchase);
+        return purchase;
+    }
 }

@@ -16,11 +16,7 @@ import java.util.List;
 
 @Controller
 public class PurchaseController {
-//    @InitBinder
-//    protected void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-//    }
+
 
     @Autowired
     private PurchaseService service;
@@ -44,6 +40,11 @@ public class PurchaseController {
         return layui;
     }
 
+    /**
+     * 添加
+     * @param purchase
+     * @return
+     */
     @RequestMapping("/purchase/addPurchase")
     @ResponseBody
     public boolean addPurchase(Purchase purchase){
@@ -56,7 +57,11 @@ public class PurchaseController {
         return flag;
     }
 
-
+    /**
+     * 更新
+     * @param purchase
+     * @return
+     */
     @RequestMapping("/purchase/updatePurchase")
     @ResponseBody
     public boolean updatePurchase(Purchase purchase){
@@ -69,7 +74,13 @@ public class PurchaseController {
         return flag;
     }
 
-
+    /**
+     * 删除
+     * @param material
+     * @param name
+     * @param quantity
+     * @return
+     */
     @RequestMapping("/purchase/delPurchase")
     @ResponseBody
     public boolean delPurchase(String material,String name,int quantity){
@@ -83,7 +94,13 @@ public class PurchaseController {
         return flag;
     }
 
-
+    /**
+     * 查询
+     * @param material
+     * @param name
+     * @param quantity
+     * @return
+     */
     @RequestMapping(value = "/purchase/findByMaterial",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String findByMaterial(String material,String name,int quantity){
@@ -95,7 +112,14 @@ public class PurchaseController {
         }
         return JSON.toJSONString(purchase);
     }
-//
+
+    /**
+     * 跳转网页
+     * @param material
+     * @param name
+     * @param quantity
+     * @return
+     */
     @RequestMapping("/purchase/toUpdatePur")
     public String toUpdatePur(String material,String name,int quantity){
         return "forward:/views/purchase/purchase/updatePur.html";

@@ -46,10 +46,10 @@ public class OutputController {
      */
     @RequestMapping("/output/updateStatus")
     @ResponseBody
-    public boolean updateStatus(String status,String name,String material){
+    public boolean updateStatus(String status,String name,String material,int quan){
         boolean flag = false;
         try {
-            flag = service.updateStatus(status, name, material);
+            flag = service.updateStatus(status, name, material,quan);
         } catch (Exception e) {
             e.printStackTrace();
         }

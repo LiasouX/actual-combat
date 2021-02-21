@@ -109,7 +109,6 @@
 
         $.get("/purchase/findByMaterial",{"material":qs.material,"name":qs.name,"quantity":qs.quantity},function (data){
             //表单赋值
-            console.log(data.category)
             form.val("layuiadmin-app-form-list",{
                 "category":data.category,
                 "material":data.material,

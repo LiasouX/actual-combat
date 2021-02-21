@@ -106,6 +106,12 @@ public class MateCateController {
         return JSON.toJSONString(mateCate);
     }
 
+    /**
+     * 查询
+     * @param code
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/matecate/findByCodeBoolean",produces = "application/json;charset=utf-8")
     @ResponseBody
     public boolean findByCode1(String code) throws Exception {

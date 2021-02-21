@@ -38,8 +38,15 @@ public class OutputServiceImpl implements OutputService {
      * @return
      */
     @Override
-    public boolean updateStatus(String status, String name, String material) throws Exception {
-        return mapper.updateStatus(status, name, material);
+    public boolean updateStatus(String status, String name, String material,int quan) throws Exception {
+
+
+        if (quan>=0){
+            return mapper.updateStatus(status, name, material,quan);
+        }else{
+            return  false;
+        }
+
     }
 
 
@@ -92,7 +99,7 @@ public class OutputServiceImpl implements OutputService {
 
 
     /**
-     * 查询指定intput信息
+     * 查询指定Ontput信息
      * @param mate
      * @param name
      * @return

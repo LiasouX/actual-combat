@@ -74,4 +74,7 @@ public interface UserMapper {
      */
     @Select("select username from user where type=#{type}")
     List<String> findByUsername(String type);
+
+
+
 }

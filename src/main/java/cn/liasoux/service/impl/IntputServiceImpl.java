@@ -100,4 +100,25 @@ public class IntputServiceImpl implements IntputService {
     }
 
 
+    /**
+     * 查询物资数量
+     * @return
+     */
+    @Override
+    public List<String> findPurchase() {
+        List<Intput> intputs = mapper.findPurchase();
+        List<String> ins = null;
+        for (int i = 0; i < intputs.size(); i++) {
+            for (int j = i+1; j < intputs.size(); j++) {
+                if (intputs.get(i).getMaterial()==intputs.get(j).getMaterial()){
+                    int i1 = intputs.get(i).getQuantity() + intputs.get(j).getQuantity();
+                    ins.set(i1,intputs.get(i).getMaterial());
+                    intputs.remove(j);
+                }
+            }
+        }
+        return ins;
+    }
+
+
 }

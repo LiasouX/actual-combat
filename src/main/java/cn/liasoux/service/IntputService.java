@@ -57,4 +57,11 @@ public interface IntputService {
      * @throws Exception
      */
     Intput findByIntput(String mate,String quan, String name)throws Exception;
+
+
+    /**
+     * 查询物资数量
+     * @return
+     */
+    List<String> findPurchase();
 }
