@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class wuzi extends HashMap<String,Integer> {
 
     public static wuzi add(String materila,int quantity){
-        ArrayList<String> strings = new ArrayList<>();
+        ArrayList<String> strings = new ArrayList<String>();
         wuzi wuzi = new wuzi();
         wuzi.put(materila,quantity);
         return wuzi;
